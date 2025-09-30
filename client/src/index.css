@@ -1,0 +1,58 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700&display=swap");
+@import "tailwindcss";
+
+* {
+  font-family: "Rubik", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 30px;
+}
+
+h2 {
+  font-size: 28px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+h4 {
+  font-size: 20px;
+}
+
+h5 {
+  font-size: 18px;
+}
+
+h6 {
+  font-size: 16px;
+}
+
+body {
+  background-color: rgb(240, 240, 240);
+}
+
+.btn-1 {
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+  font-weight: bold;
+  background-color: #ff6b35;
+
+  &:hover {
+    background-color: #e35d2d;
+  }
+}
+
+input:focus {
+  outline: none;
+}
