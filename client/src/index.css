@@ -56,3 +56,9 @@ body {
 input:focus {
   outline: none;
 }
+
+.link {
+  &:hover {
+    color: #0891b2;
+  }
+}
