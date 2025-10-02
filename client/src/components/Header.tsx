@@ -17,7 +17,7 @@ function Header() {
   }, []);
 
   return (
-    <header className="fixed flex justify-between items-center px-3 py-5 h-24 md:p-5 bg-cyan-500 w-screen text-white shadow-sm">
+    <header className="fixed flex justify-between items-center px-3 py-5 h-24 md:p-8 bg-cyan-500 w-screen text-white shadow-sm">
       {/* Marca y boton de categorias*/}
       <div className="flex gap-4">
         <button
@@ -51,7 +51,7 @@ function Header() {
           onClick={() => setIsCategories(false)}
         >
           <div
-            className="absolute bg-cyan-400 h-[60vh] w-64 flex flex-col"
+            className="absolute bg-cyan-400 h-[60vh] w-64 flex flex-col rounded-br-lg"
             onClick={(e) => e.stopPropagation()}
           >
             {categories.map((item: string, index: number) => {
