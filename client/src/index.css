@@ -42,14 +42,24 @@ body {
   background-color: rgb(240, 240, 240);
 }
 
-.btn-1 {
+.btn-1,
+.btn-2 {
   padding: 1rem 1.5rem;
   border-radius: 1rem;
   font-weight: bold;
   background-color: #ff6b35;
+  color: white;
 
   &:hover {
     background-color: #e35d2d;
+  }
+}
+
+.btn-2 {
+  background-color: #06b6d4;
+
+  &:hover {
+    background-color: #0891b2;
   }
 }
 
