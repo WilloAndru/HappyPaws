@@ -5,7 +5,7 @@ import Brand from "./Brand";
 
 function Footer() {
   return (
-    <footer className="flex flex-col gap-4 p-5 border-t border-t-neutral-600">
+    <footer className="flex flex-col gap-4 p-8 border-t border-t-neutral-600 bg-white">
       {/* Links aburridos */}
       <div className="flex justify-between">
         <div className="flex flex-col gap-2">

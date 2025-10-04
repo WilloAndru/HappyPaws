@@ -17,7 +17,7 @@ function Header() {
   }, []);
 
   return (
-    <header className="fixed flex justify-between items-center px-3 py-5 h-24 md:p-8 bg-cyan-500 w-screen text-white shadow-sm">
+    <header className="fixed flex justify-between items-center px-3 py-5 h-24 md:p-8 bg-cyan-500 w-screen text-white shadow-sm z-20">
       {/* Marca y boton de categorias*/}
       <div className="flex gap-4">
         <button
