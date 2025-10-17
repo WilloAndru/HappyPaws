@@ -1,4 +1,3 @@
-import { IoMenu } from "react-icons/io5";
 import {
   FaComment,
   FaUserCircle,
@@ -10,14 +9,9 @@ import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <header className="text-white fixed flex flex-col gap-2 py-2 px-2 md:px-8 md:pb-4 md:pt-2 bg-primary w-full md:flex-row md:items-center md:justify-between">
-      {/* Marca y menú */}
-      <div className="flex items-center gap-2">
-        <button className="text-4xl md:hidden">
-          <IoMenu />
-        </button>
-        <h1>HappyPaws</h1>
-      </div>
+    <header className="text-white fixed flex flex-col gap-2 py-2 px-2 md:px-8 md:py-4 bg-primary w-full md:flex-row md:items-center md:justify-between">
+      {/* Titulo */}
+      <h1>HappyPaws</h1>
 
       {/* Barra de búsqueda */}
       <form className="flex order-2 md:order-none md:flex-1 md:mx-6 pl-2 rounded-lg border-0 bg-white shadow-sm md:max-w-[40vw]">
