@@ -20,14 +20,6 @@ export default function Home() {
   const [isPauseSlider, setIsPauseSlider] = useState(false);
   const [stepPets, setStepPets] = useState(0);
 
-  const handleStepPet = (isNext: boolean) => {
-    if (isNext) {
-      setStepPets((prev) => prev + 1);
-    } else {
-      setStepPets((prev) => prev - 1);
-    }
-  };
-
   // Funcion para deslisar las imagenes del slider automaticamente
   useEffect(() => {
     if (isPauseSlider) return;
@@ -40,6 +32,40 @@ export default function Home() {
 
   return (
     <main className="flex gap-6 flex-col">
+      {/* Seccion de descuentos por primera compra */}
+      <section className="flex justify-between gap-8 px-6 py-4 rounded-2xl bg-blue-200 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <h2>Hello!</h2>
+          <Link
+            href="/login"
+            className="rounded-3xl text-white font-bold bg-primary hover:bg-primary-hover px-4 py-2 w-fit"
+          >
+            Sign in
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Link
+            href="/shop"
+            className="flex gap-4 items-center bg-white rounded-2xl px-4 py-2"
+          >
+            <img className="w-10" src="/icons/money.png" alt="Money" />
+            <div className="text-sm">
+              <h6>Save 15% on your first order</h6>
+              <p className="text-primary">Order now!</p>
+            </div>
+          </Link>
+          <Link
+            href="/shop:farmaco"
+            className="flex gap-4 items-center bg-white rounded-2xl px-4 py-2"
+          >
+            <img className="w-10" src="/icons/farmaco.png" alt="Farmaco" />
+            <div className="text-sm">
+              <h6>Save 25% on first medicine order</h6>
+              <p className="text-primary">Order now!</p>
+            </div>
+          </Link>
+        </div>
+      </section>
       {/* Seccion de imagenes deslisantes */}
       <section className="relative rounded-2xl overflow-hidden">
         <div
@@ -83,7 +109,7 @@ export default function Home() {
         <h2>What’s your pet?</h2>
         <div className="relative flex items-center overflow-hidden">
           <button
-            onClick={() => handleStepPet(false)}
+            onClick={() => setStepPets((prev) => prev - 1)}
             className={`${
               stepPets === 0 ? "hidden" : "flex"
             } z-1 absolute left-0 bg-primary rounded-full p-4 text-white hover:bg-primary-hover`}
@@ -91,7 +117,7 @@ export default function Home() {
             <FaArrowLeft />
           </button>
           <div
-            className="flex mt-2 transition-transform duration-500 ease-in-out"
+            className="flex transition-transform duration-500 ease-in-out"
             style={{ transform: `translateX(-${stepPets * 33 * 3}%)` }}
           >
             {imagesPets.map((item, index) => {
@@ -115,7 +141,7 @@ export default function Home() {
             })}
           </div>
           <button
-            onClick={() => handleStepPet(true)}
+            onClick={() => setStepPets((prev) => prev + 1)}
             className={`${
               stepPets === 1 ? "hidden" : "flex"
             } absolute right-0 bg-primary rounded-full p-4 text-white hover:bg-primary-hover`}

@@ -9,7 +9,7 @@ import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <header className="z-1 text-white fixed flex flex-col gap-2 py-2 px-2 md:px-8 md:py-4 bg-primary w-full md:flex-row md:items-center md:justify-between">
+    <header className="z-1 top-0 left-0 text-white fixed flex flex-col gap-2 py-2 px-2 md:px-8 md:py-4 bg-primary w-full md:flex-row md:items-center md:justify-between">
       {/* Titulo */}
       <h1>HappyPaws</h1>
 

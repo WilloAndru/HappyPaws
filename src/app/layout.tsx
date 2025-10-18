@@ -14,9 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="min-h-screen">
+      <body className="min-h-screen p-5 flex justify-center w-full">
         <Navbar />
-        <main className="pt-30 md:py-25 px-5">{children}</main>
+        <main className="pt-25 w-full max-w-[1300px]">{children}</main>
       </body>
     </html>
   );
