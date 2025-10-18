@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaPause, FaPlay } from "react-icons/fa6";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import next from "next";
 
 export default function Home() {
   const imagesSlider = ["img1.jpg", "img2.jpg", "img3.jpg"];
@@ -17,6 +18,15 @@ export default function Home() {
 
   const [slide, setSlide] = useState(0);
   const [isPauseSlider, setIsPauseSlider] = useState(false);
+  const [stepPets, setStepPets] = useState(0);
+
+  const handleStepPet = (isNext: boolean) => {
+    if (isNext) {
+      setStepPets((prev) => prev + 1);
+    } else {
+      setStepPets((prev) => prev - 1);
+    }
+  };
 
   // Funcion para deslisar las imagenes del slider automaticamente
   useEffect(() => {
@@ -71,27 +81,45 @@ export default function Home() {
       {/* Seccion de categorias por mascota */}
       <section>
         <h2>What’s your pet?</h2>
-        <div className="relative flex items-center mt-2 overflow-hidden">
-          <button className="fixed left-5 bg-primary rounded-full p-4 text-white hover:bg-primary-hover">
+        <div className="relative flex items-center overflow-hidden">
+          <button
+            onClick={() => handleStepPet(false)}
+            className={`${
+              stepPets === 0 ? "hidden" : "flex"
+            } z-1 absolute left-0 bg-primary rounded-full p-4 text-white hover:bg-primary-hover`}
+          >
             <FaArrowLeft />
           </button>
+          <div
+            className="flex mt-2 transition-transform duration-500 ease-in-out"
+            style={{ transform: `translateX(-${stepPets * 144 * 3}px)` }}
+          >
+            {imagesPets.map((item, index) => {
+              const name = item.replace(".png", "");
+              const capitalized = name.charAt(0).toUpperCase() + name.slice(1);
 
-          {imagesPets.map((item, index) => (
-            <Link
-              className="flex flex-col items-center gap-2 hover:bg-gray-200 rounded-2xl p-2"
-              key={item}
-              href={item}
-            >
-              <img
-                src={`/categories/${item}`}
-                alt={`Image ${index}`}
-                className="min-w-32 object-cover rounded-full flex-shrink-0"
-              />
-              <h6>{item}</h6>
-            </Link>
-          ))}
-
-          <button className="fixed right-5 bg-primary rounded-full p-4 text-white hover:bg-primary-hover">
+              return (
+                <Link
+                  className="flex flex-col items-center gap-2 hover:bg-gray-200 rounded-2xl p-2"
+                  key={item}
+                  href={`/${name}`}
+                >
+                  <img
+                    src={`/categories/${item}`}
+                    alt={`Image ${index}`}
+                    className="min-w-32 md: object-cover rounded-full flex-shrink-0"
+                  />
+                  <h6>{capitalized}</h6>
+                </Link>
+              );
+            })}
+          </div>
+          <button
+            onClick={() => handleStepPet(true)}
+            className={`${
+              stepPets === imagesPets.length / 3 - 1 ? "hidden" : "flex"
+            } absolute right-0 bg-primary rounded-full p-4 text-white hover:bg-primary-hover`}
+          >
             <FaArrowRight />
           </button>
         </div>
