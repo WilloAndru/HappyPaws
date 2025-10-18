@@ -92,7 +92,7 @@ export default function Home() {
           </button>
           <div
             className="flex mt-2 transition-transform duration-500 ease-in-out"
-            style={{ transform: `translateX(-${stepPets * 144 * 3}px)` }}
+            style={{ transform: `translateX(-${stepPets * 33 * 3}%)` }}
           >
             {imagesPets.map((item, index) => {
               const name = item.replace(".png", "");
@@ -100,14 +100,14 @@ export default function Home() {
 
               return (
                 <Link
-                  className="flex flex-col items-center gap-2 hover:bg-gray-200 rounded-2xl p-2"
+                  className="min-w-[33%] md:min-w-[20%] p-[2%] flex flex-col items-center gap-2 hover:bg-gray-200 rounded-2xl"
                   key={item}
                   href={`/${name}`}
                 >
                   <img
                     src={`/categories/${item}`}
                     alt={`Image ${index}`}
-                    className="min-w-32 md: object-cover rounded-full flex-shrink-0"
+                    className="object-cover rounded-full flex-shrink-0"
                   />
                   <h6>{capitalized}</h6>
                 </Link>
@@ -117,7 +117,7 @@ export default function Home() {
           <button
             onClick={() => handleStepPet(true)}
             className={`${
-              stepPets === imagesPets.length / 3 - 1 ? "hidden" : "flex"
+              stepPets === 1 ? "hidden" : "flex"
             } absolute right-0 bg-primary rounded-full p-4 text-white hover:bg-primary-hover`}
           >
             <FaArrowRight />
