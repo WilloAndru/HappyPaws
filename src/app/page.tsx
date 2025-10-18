@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaPause, FaPlay } from "react-icons/fa6";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import axios from "axios";
 
 export default function Home() {
   const imagesSlider = ["img1.jpg", "img2.jpg", "img3.jpg"];
@@ -26,6 +27,7 @@ export default function Home() {
   const [slide, setSlide] = useState(0);
   const [isPauseSlider, setIsPauseSlider] = useState(false);
   const [stepPets, setStepPets] = useState(0);
+  const [stepProducts, setStepProducts] = useState(0);
 
   // Funcion para deslisar las imagenes del slider automaticamente
   useEffect(() => {
@@ -181,21 +183,81 @@ export default function Home() {
       <section>
         <h2>For pets that deserve the best</h2>
         <div className="mt-2  grid grid-cols-2 md:grid-cols-4 gap-2">
-          <div className="flex flex-col p-2 rounded-2xl bg-blue-300 items-center gap-2 justify-center text-center">
+          <div className="flex flex-col p-2 rounded-2xl bg-blue-200 items-center gap-2 justify-center text-center">
             <img className="rounded-2xl" src="/advices/img1.png" alt="" />
             <h6>Award-winning 24/7 custom care</h6>
           </div>
-          <div className="flex flex-col p-2 rounded-2xl bg-blue-300 items-center gap-2 justify-center text-center">
+          <div className="flex flex-col p-2 rounded-2xl bg-blue-200 items-center gap-2 justify-center text-center">
             <img className="rounded-2xl" src="/advices/img2.png" alt="" />
             <h6>Chat free with our professional team</h6>
           </div>
-          <div className="flex flex-col p-2 rounded-2xl bg-blue-300 items-center gap-2 justify-center text-center">
+          <div className="flex flex-col p-2 rounded-2xl bg-blue-200 items-center gap-2 justify-center text-center">
             <img className="rounded-2xl" src="/advices/img3.png" alt="" />
             <h6>Prescription meds</h6>
           </div>
-          <div className="flex flex-col p-2 rounded-2xl bg-blue-300 items-center gap-2 justify-center text-center">
+          <div className="flex flex-col p-2 rounded-2xl bg-blue-200 items-center gap-2 justify-center text-center">
             <img className="rounded-2xl" src="/advices/img4.png" alt="" />
             <h6>Pet insurance</h6>
+          </div>
+        </div>
+      </section>
+      {/* Seccion de productos en tendencia */}
+      <section className="bg-blue-200 p-3 rounded-2xl">
+        <h2>Trending Products</h2>
+        <div className="mt-2 flex gap-2">
+          <div className="flex gap-1 flex-col">
+            <img
+              className="rounded-2xl object-cover"
+              src="/advices/img5.png"
+              alt="Image"
+            />
+            <h5>Ready for buy now?</h5>
+            <p>
+              Discover the most popular pet products of the moment, loved by
+              owners who set the trend.
+            </p>
+          </div>
+          <div className="relative flex items-center overflow-hidden">
+            <button
+              onClick={() => setStepProducts((prev) => prev - 1)}
+              className={`${
+                stepProducts === 0 ? "hidden" : "flex"
+              } z-1 absolute left-0 bg-primary rounded-full p-4 text-white hover:bg-primary-hover`}
+            >
+              <FaArrowLeft />
+            </button>
+            <div
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ transform: `translateX(-${stepProducts * 33 * 3}%)` }}
+            >
+              {imagesPets.map((item, index) => {
+                const name = item.replace(".png", "");
+                const capitalized =
+                  name.charAt(0).toUpperCase() + name.slice(1);
+                return (
+                  <Link
+                    className="min-w-[33%] md:min-w-[20%] p-[2%] flex flex-col items-center gap-2 hover:bg-gray-200 rounded-2xl"
+                    key={index}
+                    href={`/${name}`}
+                  >
+                    <img
+                      src={`/pets/${item}`}
+                      alt={name}
+                      className="object-cover rounded-full flex-shrink-0"
+                    />
+                    <h6>{capitalized}</h6>
+                  </Link>
+                );
+              })}
+            </div>
+            <button
+              onClick={() => setStepProducts((prev) => prev + 1)}
+              className={`${
+                stepProducts === 1 ? "hidden" : "flex"
+              } absolute right-0 bg-primary rounded-full p-4 text-white hover:bg-primary-hover`}
+            >
+              <FaArrowRight />
+            </button>
           </div>
         </div>
       </section>
