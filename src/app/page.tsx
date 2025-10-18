@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaPause, FaPlay } from "react-icons/fa6";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import next from "next";
 
 export default function Home() {
   const imagesSlider = ["img1.jpg", "img2.jpg", "img3.jpg"];
@@ -14,6 +13,14 @@ export default function Home() {
     "fish.png",
     "hamster.png",
     "horse.png",
+  ];
+  const categories = [
+    "food.png",
+    "health.png",
+    "toys.png",
+    "hygiene.png",
+    "accessories.png",
+    "habitat.png",
   ];
 
   const [slide, setSlide] = useState(0);
@@ -31,7 +38,7 @@ export default function Home() {
   }, [isPauseSlider]);
 
   return (
-    <main className="flex gap-6 flex-col">
+    <main className="flex gap-8 flex-col">
       {/* Seccion de descuentos por primera compra */}
       <section className="flex justify-between gap-8 px-6 py-4 rounded-2xl bg-blue-200 items-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -127,12 +134,12 @@ export default function Home() {
               return (
                 <Link
                   className="min-w-[33%] md:min-w-[20%] p-[2%] flex flex-col items-center gap-2 hover:bg-gray-200 rounded-2xl"
-                  key={item}
+                  key={index}
                   href={`/${name}`}
                 >
                   <img
-                    src={`/categories/${item}`}
-                    alt={`Image ${index}`}
+                    src={`/pets/${item}`}
+                    alt={name}
                     className="object-cover rounded-full flex-shrink-0"
                   />
                   <h6>{capitalized}</h6>
@@ -148,6 +155,26 @@ export default function Home() {
           >
             <FaArrowRight />
           </button>
+        </div>
+      </section>
+      {/* Seccion de categorias */}
+      <section>
+        <h2>Categories</h2>
+        <div className="grid grid-cols-3 md:grid-cols-6">
+          {categories.map((item, index) => {
+            const name = item.replace(".png", "");
+            const capitalized = name.charAt(0).toUpperCase() + name.slice(1);
+            return (
+              <Link
+                key={index}
+                href={`/${name}`}
+                className="flex flex-col gap-2 items-center border-2 border-white hover:border-gray-400 rounded-3xl p-4"
+              >
+                <img src={`/categories/${item}`} alt={name} />
+                <h6>{capitalized}</h6>
+              </Link>
+            );
+          })}
         </div>
       </section>
     </main>
