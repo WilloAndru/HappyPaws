@@ -114,7 +114,7 @@ export default function Home() {
       {/* Seccion de categorias por mascota */}
       <section>
         <h2>What’s your pet?</h2>
-        <div className="relative flex items-center overflow-hidden">
+        <div className="mt-2 relative flex items-center overflow-hidden">
           <button
             onClick={() => setStepPets((prev) => prev - 1)}
             className={`${
@@ -160,7 +160,7 @@ export default function Home() {
       {/* Seccion de categorias */}
       <section>
         <h2>Categories</h2>
-        <div className="grid grid-cols-3 md:grid-cols-6">
+        <div className="mt-2  grid grid-cols-3 md:grid-cols-6">
           {categories.map((item, index) => {
             const name = item.replace(".png", "");
             const capitalized = name.charAt(0).toUpperCase() + name.slice(1);
@@ -175,6 +175,28 @@ export default function Home() {
               </Link>
             );
           })}
+        </div>
+      </section>
+      {/* Seccion de funcionalidades de la pagina */}
+      <section>
+        <h2>For pets that deserve the best</h2>
+        <div className="mt-2  grid grid-cols-2 md:grid-cols-4 gap-2">
+          <div className="flex flex-col p-2 rounded-2xl bg-blue-300 items-center gap-2 justify-center text-center">
+            <img className="rounded-2xl" src="/advices/img1.png" alt="" />
+            <h6>Award-winning 24/7 custom care</h6>
+          </div>
+          <div className="flex flex-col p-2 rounded-2xl bg-blue-300 items-center gap-2 justify-center text-center">
+            <img className="rounded-2xl" src="/advices/img2.png" alt="" />
+            <h6>Chat free with our professional team</h6>
+          </div>
+          <div className="flex flex-col p-2 rounded-2xl bg-blue-300 items-center gap-2 justify-center text-center">
+            <img className="rounded-2xl" src="/advices/img3.png" alt="" />
+            <h6>Prescription meds</h6>
+          </div>
+          <div className="flex flex-col p-2 rounded-2xl bg-blue-300 items-center gap-2 justify-center text-center">
+            <img className="rounded-2xl" src="/advices/img4.png" alt="" />
+            <h6>Pet insurance</h6>
+          </div>
         </div>
       </section>
     </main>
