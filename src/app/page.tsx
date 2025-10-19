@@ -1,9 +1,9 @@
 "use client";
+import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaPause, FaPlay } from "react-icons/fa6";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import axios from "axios";
+import Slider from "../components/Slider";
 
 export default function Home() {
   const imagesSlider = ["img1.jpg", "img2.jpg", "img3.jpg"];
@@ -26,8 +26,6 @@ export default function Home() {
 
   const [slide, setSlide] = useState(0);
   const [isPauseSlider, setIsPauseSlider] = useState(false);
-  const [stepPets, setStepPets] = useState(0);
-  const [stepProducts, setStepProducts] = useState(0);
 
   // Funcion para deslisar las imagenes del slider automaticamente
   useEffect(() => {
@@ -116,48 +114,7 @@ export default function Home() {
       {/* Seccion de categorias por mascota */}
       <section>
         <h2>What’s your pet?</h2>
-        <div className="mt-2 relative flex items-center overflow-hidden">
-          <button
-            onClick={() => setStepPets((prev) => prev - 1)}
-            className={`${
-              stepPets === 0 ? "hidden" : "flex"
-            } z-1 absolute left-0 bg-primary rounded-full p-4 text-white hover:bg-primary-hover`}
-          >
-            <FaArrowLeft />
-          </button>
-          <div
-            className="flex transition-transform duration-500 ease-in-out"
-            style={{ transform: `translateX(-${stepPets * 33 * 3}%)` }}
-          >
-            {imagesPets.map((item, index) => {
-              const name = item.replace(".png", "");
-              const capitalized = name.charAt(0).toUpperCase() + name.slice(1);
-
-              return (
-                <Link
-                  className="min-w-[33%] md:min-w-[20%] p-[2%] flex flex-col items-center gap-2 hover:bg-gray-200 rounded-2xl"
-                  key={index}
-                  href={`/${name}`}
-                >
-                  <img
-                    src={`/pets/${item}`}
-                    alt={name}
-                    className="object-cover rounded-full flex-shrink-0"
-                  />
-                  <h6>{capitalized}</h6>
-                </Link>
-              );
-            })}
-          </div>
-          <button
-            onClick={() => setStepPets((prev) => prev + 1)}
-            className={`${
-              stepPets === 1 ? "hidden" : "flex"
-            } absolute right-0 bg-primary rounded-full p-4 text-white hover:bg-primary-hover`}
-          >
-            <FaArrowRight />
-          </button>
-        </div>
+        <Slider list={imagesPets} />
       </section>
       {/* Seccion de categorias */}
       <section>
@@ -217,48 +174,7 @@ export default function Home() {
               owners who set the trend.
             </p>
           </div>
-          <div className="relative flex items-center overflow-hidden">
-            <button
-              onClick={() => setStepProducts((prev) => prev - 1)}
-              className={`${
-                stepProducts === 0 ? "hidden" : "flex"
-              } z-1 absolute left-0 bg-primary rounded-full p-4 text-white hover:bg-primary-hover`}
-            >
-              <FaArrowLeft />
-            </button>
-            <div
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${stepProducts * 33 * 3}%)` }}
-            >
-              {imagesPets.map((item, index) => {
-                const name = item.replace(".png", "");
-                const capitalized =
-                  name.charAt(0).toUpperCase() + name.slice(1);
-                return (
-                  <Link
-                    className="min-w-[33%] md:min-w-[20%] p-[2%] flex flex-col items-center gap-2 hover:bg-gray-200 rounded-2xl"
-                    key={index}
-                    href={`/${name}`}
-                  >
-                    <img
-                      src={`/pets/${item}`}
-                      alt={name}
-                      className="object-cover rounded-full flex-shrink-0"
-                    />
-                    <h6>{capitalized}</h6>
-                  </Link>
-                );
-              })}
-            </div>
-            <button
-              onClick={() => setStepProducts((prev) => prev + 1)}
-              className={`${
-                stepProducts === 1 ? "hidden" : "flex"
-              } absolute right-0 bg-primary rounded-full p-4 text-white hover:bg-primary-hover`}
-            >
-              <FaArrowRight />
-            </button>
-          </div>
+          <Slider list={imagesPets} />
         </div>
       </section>
     </main>
