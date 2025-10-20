@@ -27,8 +27,8 @@ export default function Footer() {
           <h6>Back to Top</h6>
         </button>
       </div>
-      <div className="flex items-center px-8 py-4 justify-between">
-        <div className="flex flex-col md:flex-row gap-4">
+      <div className="flex items-center px-8 py-4 justify-center md:justify-between">
+        <div className="hidden md:flex gap-4">
           <p>Copyright @ 2025</p>
           <Link href="/" className="hover:text-gray-500">
             Terms
@@ -46,7 +46,7 @@ export default function Footer() {
             Jobs
           </Link>
         </div>
-        <div className="flex flex-col md:flex-row gap-4 text-4xl">
+        <div className="flex gap-4 text-4xl">
           <FaFacebook className="text-blue-500" />
           <FaYoutube className="text-red-500" />
           <FaInstagramSquare className="text-pink-500" />

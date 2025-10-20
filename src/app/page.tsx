@@ -1,9 +1,9 @@
 "use client";
-import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaPause, FaPlay } from "react-icons/fa6";
 import Slider from "../components/Slider";
+import { getProducts } from "@/hooks/useProducts";
 
 export default function Home() {
   const imagesSlider = ["img1.jpg", "img2.jpg", "img3.jpg"];
@@ -26,6 +26,16 @@ export default function Home() {
 
   const [slide, setSlide] = useState(0);
   const [isPauseSlider, setIsPauseSlider] = useState(false);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    // Obtenemos los productos mas relevantes
+    const fetchProducts = async () => {
+      const data = await getProducts();
+      setProducts(data);
+    };
+    fetchProducts();
+  }, []);
 
   // Funcion para deslisar las imagenes del slider automaticamente
   useEffect(() => {
