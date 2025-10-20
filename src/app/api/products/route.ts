@@ -6,6 +6,7 @@ export async function GET() {
     const products = await prisma.product.findMany();
     return NextResponse.json(products);
   } catch (error) {
+    console.error("Error GET /api/products:", error);
     return NextResponse.json(
       { error: "Failed to fetch products" },
       { status: 500 }
