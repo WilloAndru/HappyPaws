@@ -33,6 +33,7 @@ export default function Home() {
     const fetchProducts = async () => {
       const data = await getProducts();
       setProducts(data);
+      console.log(data);
     };
     fetchProducts();
   }, []);
@@ -184,7 +185,7 @@ export default function Home() {
               owners who set the trend.
             </p>
           </div>
-          <Slider list={imagesPets} />
+          <Slider list={products} isCategory={false} />
         </div>
       </section>
     </main>
