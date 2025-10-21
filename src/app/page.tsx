@@ -125,7 +125,7 @@ export default function Home() {
       {/* Seccion de categorias por mascota */}
       <section>
         <h2>What’s your pet?</h2>
-        <Slider list={imagesPets} />
+        <Slider list={imagesPets} isCategory={true} />
       </section>
       {/* Seccion de categorias */}
       <section>
