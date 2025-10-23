@@ -172,18 +172,15 @@ export default function Home() {
       {/* Seccion de productos en tendencia */}
       <section className="bg-blue-200 p-3 rounded-2xl">
         <h2>Trending Products</h2>
-        <div className="mt-2 flex gap-2">
-          <div className="flex gap-1 flex-col">
+        <div className="mt-2 gap-2 flex">
+          <div className="gap-1 flex-col hidden md:flex">
             <img
-              className="rounded-2xl object-cover"
+              className="rounded-sm object-cover w-[16vw] max-w-64"
               src="/advices/img5.png"
               alt="Image"
             />
             <h5>Ready for buy now?</h5>
-            <p>
-              Discover the most popular pet products of the moment, loved by
-              owners who set the trend.
-            </p>
+            <p>Discover the most popular pet products of the moment.</p>
           </div>
           <Slider list={products} isCategory={false} />
         </div>

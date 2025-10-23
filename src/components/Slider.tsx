@@ -12,7 +12,7 @@ export default function Slider({ list, isCategory }: SliderProps) {
   const [step, setStep] = useState(0);
 
   return (
-    <div className="mt-2 relative flex items-center overflow-hidden">
+    <div className="relative flex items-center overflow-hidden">
       <button
         onClick={() => setStep((prev) => prev - 1)}
         className={`${
@@ -22,8 +22,8 @@ export default function Slider({ list, isCategory }: SliderProps) {
         <FaArrowLeft />
       </button>
       <div
-        className="flex transition-transform duration-500 ease-in-out"
-        style={{ transform: `translateX(-${step * 33 * 3}%)` }}
+        className="flex transition-transform duration-500 ease-in-out gap-[1%] w-full"
+        style={{ transform: `translateX(-${step * 101}%)` }}
       >
         {list.map((item, index) => {
           const name = isCategory ? item.replace(".png", "") : item.name;
@@ -31,10 +31,10 @@ export default function Slider({ list, isCategory }: SliderProps) {
 
           return (
             <Link
-              className={`min-w-[33%] md:min-w-[20%] flex flex-col gap-1 rounded-2xl ${
+              className={`min-w-[33%] md:min-w-[19.1%] flex flex-col rounded-sm ${
                 isCategory
                   ? "items-center p-[2%] hover:bg-gray-200"
-                  : "items-start"
+                  : "items-start bg-gray-100"
               }`}
               key={index}
               href={`/${name}`}
@@ -43,26 +43,28 @@ export default function Slider({ list, isCategory }: SliderProps) {
                 src={isCategory ? `/pets/${item}` : item.imageUrl}
                 alt={name}
                 className={`object-cover ${
-                  isCategory ? "rounded-full " : "rounded-2xl"
+                  isCategory ? "rounded-full" : "rounded-sm w-full h-full"
                 }`}
               />
-              <h6>{capitalized}</h6>
-              {!isCategory && (
-                <div className="flex items-center space-x-1">
-                  {[1, 2, 3, 4, 5].map((i) => (
-                    <Star
-                      key={i}
-                      size={15}
-                      className={`${
-                        i <= item.rating
-                          ? "fill-yellow-500 text-yellow-500"
-                          : "text-gray-300"
-                      } transition-all duration-200`}
-                    />
-                  ))}
-                </div>
-              )}
-              {!isCategory && <h6>${item.price}</h6>}
+              <div className="flex flex-col gap-1 px-4 py-2">
+                <h6>{capitalized}</h6>
+                {!isCategory && (
+                  <div className="flex items-center space-x-1">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <Star
+                        key={i}
+                        size={15}
+                        className={`${
+                          i <= item.rating
+                            ? "fill-yellow-500 text-yellow-500"
+                            : "text-gray-300"
+                        } transition-all duration-200`}
+                      />
+                    ))}
+                  </div>
+                )}
+                {!isCategory && <h6>${item.price}</h6>}
+              </div>
             </Link>
           );
         })}
