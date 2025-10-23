@@ -8,14 +8,34 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum AnimalType {
+  DOG
+  CAT
+  CHICKEN
+  FISH
+  HAMSTER
+  HORSE
+}
+
+enum Category {
+  FOOD
+  HEALTH
+  TOYS
+  HYGIENE
+  ACCESSORIES
+  HABITAT
+}
+
 model Product {
   id          Int      @id @default(autoincrement())
   name        String
-  description String?
+  description String
   rating      Float     @default(0)
   discount    Int       @default(0)
   purchases   Int       @default(0)
   stock       Int       @default(0)
+  animalType  AnimalType  @default(CAT)
+  category    Category  @default(FOOD)
   price       Float
   imageUrl    String
   createdAt   DateTime  @default(now())

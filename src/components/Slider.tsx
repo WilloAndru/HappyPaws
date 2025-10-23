@@ -31,8 +31,10 @@ export default function Slider({ list, isCategory }: SliderProps) {
 
           return (
             <Link
-              className={`min-w-[33%] md:min-w-[20%] p-[2%] flex flex-col gap-1 hover:bg-gray-200 rounded-2xl ${
-                isCategory ? "items-center" : "items-start"
+              className={`min-w-[33%] md:min-w-[20%] flex flex-col gap-1 rounded-2xl ${
+                isCategory
+                  ? "items-center p-[2%] hover:bg-gray-200"
+                  : "items-start"
               }`}
               key={index}
               href={`/${name}`}
