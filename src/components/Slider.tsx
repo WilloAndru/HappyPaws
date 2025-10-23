@@ -50,6 +50,7 @@ export default function Slider({ list, isCategory }: SliderProps) {
                 <h6>{capitalized}</h6>
                 {!isCategory && (
                   <div className="flex items-center space-x-1">
+                    <p>{item.rating}</p>
                     {[1, 2, 3, 4, 5].map((i) => (
                       <Star
                         key={i}
