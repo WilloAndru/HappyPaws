@@ -33,7 +33,6 @@ export default function Home() {
     const fetchProducts = async () => {
       const data = await getProducts();
       setProducts(data);
-      console.log(data);
     };
     fetchProducts();
   }, []);
@@ -55,7 +54,7 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <h2>Hello!</h2>
           <Link
-            href="/login"
+            href="/auth"
             className="rounded-3xl text-white font-bold bg-primary hover:bg-primary-hover px-4 py-2 w-fit"
           >
             Sign in

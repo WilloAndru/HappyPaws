@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import NavbarFooterWrapper from "@/components/NavbarFooterWrapper"; // Se decidio asi por 2 errores
 
 export const metadata: Metadata = {
   title: "HappyPaws",
@@ -10,17 +9,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-1 w-full max-w-[1400px] mx-auto p-5 pt-30">
-          {children}
-        </main>
-        <Footer />
+        <NavbarFooterWrapper>{children}</NavbarFooterWrapper>
       </body>
     </html>
   );

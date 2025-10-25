@@ -5,13 +5,17 @@ import {
   FaSearch,
   FaChevronDown,
 } from "react-icons/fa";
+import { MdOutlinePets } from "react-icons/md";
 import Link from "next/link";
 
 export default function Navbar() {
   return (
     <header className="z-1 top-0 left-0 text-white fixed flex flex-col gap-2 py-2 px-2 md:px-8 md:py-4 bg-primary w-full md:flex-row md:items-center md:justify-between">
       {/* Titulo */}
-      <h1>HappyPaws</h1>
+      <Link href="/" className="flex items-center gap-2 text-2xl">
+        <MdOutlinePets />
+        <h1>HappyPaws</h1>
+      </Link>
 
       {/* Barra de búsqueda */}
       <form className="flex order-2 md:order-none md:flex-1 md:mx-6 pl-2 rounded-lg border-0 bg-white shadow-sm md:max-w-[40vw]">
@@ -36,7 +40,7 @@ export default function Navbar() {
           <FaChevronDown className="hidden md:block" />
         </Link>
         <Link
-          href="/"
+          href="/auth"
           className="flex items-center gap-2 rounded-2xl hover:bg-primary-hover px-3 py-2"
         >
           <FaUserCircle className="text-3xl" />
