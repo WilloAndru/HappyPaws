@@ -1,10 +1,42 @@
+"use client";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { MdOutlinePets } from "react-icons/md";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
+import {
+  GoogleAuthProvider,
+  GithubAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
+import { auth } from "../firebase/config";
 
 export default function Auth() {
+  // Login con google
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      console.log(result.user);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  // Login con github
+  const handleGitHubLogin = async () => {
+    const provider = new GithubAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      console.log(result.user);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  // Funcion si se desea iniciar secion con el email
+  const handleSubmit = async () => {};
+
   return (
     <main className="flex flex-col gap-6 items-center justify-center w-screen h-screen bg-[url('/bgs/bgAuth.jpg')] bg-cover bg-center bg-no-repeat">
       {/* Boton de inicio */}
@@ -15,7 +47,10 @@ export default function Auth() {
         <MdOutlinePets />
         <h1>HappyPaws</h1>
       </Link>
-      <form className="flex flex-col gap-6 p-12 rounded-2xl shadow-lg border border-gray-300 w-[350px] md:min-w-[450px]">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-6 p-12 rounded-2xl shadow-lg border border-gray-300 w-[350px] md:min-w-[450px]"
+      >
         {/* Titulo */}
         <h2>Sign in or create account</h2>
         {/* Input de email */}
@@ -38,11 +73,19 @@ export default function Auth() {
           <div className="flex-1 h-px bg-gray-500"></div>
         </div>
         {/* Botones de login con servicios */}
-        <button className="px-4 py-2 rounded-full bg-white flex items-center gap-2 justify-center border-2 border-gray-300 hover:bg-gray-300">
+        <button
+          onClick={handleGoogleLogin}
+          className="px-4 py-2 rounded-full bg-white flex items-center gap-2 justify-center border-2 border-gray-300 hover:bg-gray-300"
+          type="button"
+        >
           <FcGoogle />
           Continue with Google
         </button>
-        <button className="px-4 py-2 rounded-full bg-white flex items-center gap-2 justify-center border-2 border-gray-300 hover:bg-gray-300">
+        <button
+          type="button"
+          onClick={handleGitHubLogin}
+          className="px-4 py-2 rounded-full bg-white flex items-center gap-2 justify-center border-2 border-gray-300 hover:bg-gray-300"
+        >
           <FaGithub />
           Continue with GitHub
         </button>
