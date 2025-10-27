@@ -1,10 +1,13 @@
 import Link from "next/link";
 import React from "react";
 import { MdOutlinePets } from "react-icons/md";
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 
 export default function Auth() {
   return (
     <main className="flex flex-col gap-6 items-center justify-center w-screen h-screen bg-[url('/bgs/bgAuth.jpg')] bg-cover bg-center bg-no-repeat">
+      {/* Boton de inicio */}
       <Link
         href="/"
         className="flex items-center gap-2 text-white text-4xl p-4 rounded-2xl bg-primary"
@@ -12,15 +15,37 @@ export default function Auth() {
         <MdOutlinePets />
         <h1>HappyPaws</h1>
       </Link>
-      <form className="p-8 rounded-2xl shadow-lg border border-gray-300">
-        <h2>Sign in or create account asdfadsfasdfadfasdfafdadfaf</h2>
-        <input type="text" />
-        <button>Continue</button>
-        <div className="flex items-center my-6">
-          <div className="flex-1 h-px bg-gray-300"></div>
-          <span className="px-3 text-sm text-gray-500">or</span>
-          <div className="flex-1 h-px bg-gray-300"></div>
+      <form className="flex flex-col gap-6 p-12 rounded-2xl shadow-lg border border-gray-300 w-[350px] md:min-w-[450px]">
+        {/* Titulo */}
+        <h2>Sign in or create account</h2>
+        {/* Input de email */}
+        <div className="flex flex-col gap-2">
+          <h6>Email</h6>
+          <input
+            className="bg-white rounded-xl px-4 py-2 border-2 border-gray-400 focus:border-primary"
+            type="email"
+            placeholder="Enter your email"
+          />
         </div>
+        {/* Boton de continuar */}
+        <button className="bg-primary hover:bg-primary-hover px-4 py-2 rounded-full text-white">
+          Continue
+        </button>
+        {/* Separador del or */}
+        <div className="flex items-center">
+          <div className="flex-1 h-px bg-gray-500"></div>
+          <span className="px-3 text-gray-500">or</span>
+          <div className="flex-1 h-px bg-gray-500"></div>
+        </div>
+        {/* Botones de login con servicios */}
+        <button className="px-4 py-2 rounded-full bg-white flex items-center gap-2 justify-center border-2 border-gray-300 hover:bg-gray-300">
+          <FcGoogle />
+          Continue with Google
+        </button>
+        <button className="px-4 py-2 rounded-full bg-white flex items-center gap-2 justify-center border-2 border-gray-300 hover:bg-gray-300">
+          <FaGithub />
+          Continue with GitHub
+        </button>
       </form>
     </main>
   );
