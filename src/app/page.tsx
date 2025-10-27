@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaPause, FaPlay } from "react-icons/fa6";
 import Slider from "../components/Slider";
-import { getProducts } from "@/hooks/useProducts";
+import { getTopProducts } from "@/hooks/useProducts";
 
 export default function Home() {
   const imagesSlider = ["img1.jpg", "img2.jpg", "img3.jpg"];
@@ -31,7 +31,7 @@ export default function Home() {
   useEffect(() => {
     // Obtenemos los productos mas relevantes
     const fetchProducts = async () => {
-      const data = await getProducts();
+      const data = await getTopProducts();
       setProducts(data);
     };
     fetchProducts();

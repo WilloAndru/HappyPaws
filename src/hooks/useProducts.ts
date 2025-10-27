@@ -1,11 +1,11 @@
 import axios from "axios";
 
-export const getProducts = async () => {
+export const getTopProducts = async () => {
   try {
-    const response = await axios.get("/api/products");
-    return response.data;
+    const res = await axios.get("/api/products?sort=rating&limit=10");
+    return res.data;
   } catch (error) {
-    console.error("Error fetching products:", error);
+    console.error("Error:", error);
     return [];
   }
 };

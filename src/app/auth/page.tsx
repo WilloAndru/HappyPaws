@@ -12,6 +12,7 @@ import {
 import { auth } from "../firebase/config";
 import EmailSection from "./components/EmailSection";
 import PasswordSection from "./components/PasswordSection";
+import { syncUser } from "@/hooks/useUsers";
 
 export default function Auth() {
   // 0: Estado ingresa el email, 1: Estado ingresa contraseña para login, 2: Estado ingresa contraseña para registro
@@ -23,7 +24,13 @@ export default function Auth() {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
-      console.log(result.user);
+
+      const syncedUser = await syncUser({
+        email: result.user.email!,
+        name: result.user.displayName,
+        avatar: result.user.photoURL,
+        uid: result.user.uid,
+      });
     } catch (error) {
       console.error("Error:", error);
     }
@@ -53,8 +60,20 @@ export default function Auth() {
       <section className="flex flex-col gap-6 p-8 rounded-2xl shadow-lg border border-gray-300 w-[350px] md:min-w-[450px]">
         {/* Seccion mutable dependiendo de si es login o register */}
         {stateAuth === 0 && <EmailSection email={email} setEmail={setEmail} />}
-        {stateAuth === 1 && <PasswordSection isNew={false} email={email} />}
-        {stateAuth === 2 && <PasswordSection isNew={true} email={email} />}
+        {stateAuth === 1 && (
+          <PasswordSection
+            isNew={false}
+            email={email}
+            setStateAuth={setStateAuth}
+          />
+        )}
+        {stateAuth === 2 && (
+          <PasswordSection
+            isNew={true}
+            email={email}
+            setStateAuth={setStateAuth}
+          />
+        )}
         {/* Separador del or */}
         <div className="flex items-center">
           <div className="flex-1 h-px bg-gray-500"></div>

@@ -1,13 +1,16 @@
+import Link from "next/link";
 import React, { useState } from "react";
 
 type PasswordSectionProps = {
   isNew: boolean;
   email: string;
+  setStateAuth: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export default function PasswordSection({
   isNew,
   email,
+  setStateAuth,
 }: PasswordSectionProps) {
   const [password, setPassword] = useState("");
   const handleSubmit = async () => {};
@@ -44,7 +47,10 @@ export default function PasswordSection({
         Next
       </button>
       {/* Boton de cancelar */}
-      <button className="bg-white hover:bg-gray-300 px-4 py-2 rounded-full text-black">
+      <button
+        onClick={() => setStateAuth(0)}
+        className="bg-white hover:bg-gray-300 px-4 py-2 rounded-full text-black"
+      >
         Cancel
       </button>
     </form>
