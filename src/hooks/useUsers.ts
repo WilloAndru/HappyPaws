@@ -15,10 +15,10 @@ export const validateEmail = async (email: string) => {
 export type UserData = {
   email: string;
   name?: string | null;
-  avatar?: string | null;
-  uid: string;
+  image?: string | null;
+  firebaseUid: string;
 };
-
+// Hook para crear o devolver credenciales de un correo por google o github
 export const syncUser = async (data: UserData) => {
   try {
     const res = await axios.post("/api/users", data);

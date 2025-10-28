@@ -16,7 +16,7 @@ import { syncUser } from "@/hooks/useUsers";
 
 export default function Auth() {
   // 0: Estado ingresa el email, 1: Estado ingresa contraseña para login, 2: Estado ingresa contraseña para registro
-  const [stateAuth, setStateAuth] = useState(2);
+  const [stateAuth, setStateAuth] = useState(0);
   const [email, setEmail] = useState("");
 
   // Login con google
@@ -28,9 +28,10 @@ export default function Auth() {
       const syncedUser = await syncUser({
         email: result.user.email!,
         name: result.user.displayName,
-        avatar: result.user.photoURL,
-        uid: result.user.uid,
+        image: result.user.photoURL,
+        firebaseUid: result.user.uid,
       });
+      console.log(syncedUser);
     } catch (error) {
       console.error("Error:", error);
     }
