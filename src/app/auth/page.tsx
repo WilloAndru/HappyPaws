@@ -12,7 +12,7 @@ import {
 import { auth } from "../firebase/config";
 import EmailSection from "./components/EmailSection";
 import PasswordSection from "./components/PasswordSection";
-import { syncUser } from "@/hooks/useUsers";
+import axios from "axios";
 
 export default function Auth() {
   // 0: Estado ingresa el email, 1: Estado ingresa contraseña para login, 2: Estado ingresa contraseña para registro
@@ -24,14 +24,11 @@ export default function Auth() {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
+      const token = await result.user.getIdToken();
 
-      const syncedUser = await syncUser({
-        email: result.user.email!,
-        name: result.user.displayName,
-        image: result.user.photoURL,
-        firebaseUid: result.user.uid,
-      });
-      console.log(syncedUser);
+      const res = await axios.post("/api/users", { token });
+
+      console.log(res);
     } catch (error) {
       console.error("Error:", error);
     }

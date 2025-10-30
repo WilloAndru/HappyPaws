@@ -21,6 +21,7 @@ export default function EmailSection({ email, setEmail }: EmailSectionProps) {
           placeholder="Enter your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
       </div>
       {/* Boton de continuar */}

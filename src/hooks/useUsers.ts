@@ -18,13 +18,3 @@ export type UserData = {
   image?: string | null;
   firebaseUid: string;
 };
-// Hook para crear o devolver credenciales de un correo por google o github
-export const syncUser = async (data: UserData) => {
-  try {
-    const res = await axios.post("/api/users", data);
-    return res.data;
-  } catch (error) {
-    console.error("Error:", error);
-    return null;
-  }
-};

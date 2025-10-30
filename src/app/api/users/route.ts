@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/prisma";
+import { adminAuth } from "@/app/firebase/admin";
 import { NextResponse } from "next/server";
+import firebase from "firebase/compat/app";
 
 export async function GET(req: Request) {
   try {
@@ -25,28 +27,31 @@ export async function GET(req: Request) {
 // Registro o login con firebase
 export async function POST(req: Request) {
   try {
-    const { email, name, image, firebaseUid } = await req.json();
+    const { token } = await req.json();
 
-    // Upsert busca el user por el uid, lo crea si no esta y si esta lo envia
-    const user = await prisma.user.upsert({
-      where: { firebaseUid },
-      update: {},
-      create: {
-        firebaseUid,
-        email,
-        name,
-        image,
-      },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        image: true,
-        createdAt: true,
-      },
+    if (!token) {
+      return NextResponse.json({ error: "Required token" }, { status: 400 });
+    }
+
+    const decodedToken = await adminAuth.verifyIdToken(token);
+    const { uid, email, name, picture } = decodedToken;
+
+    let user = await prisma.user.findUnique({
+      where: { firebaseUid: uid },
     });
 
-    return Response.json(user, { status: 200 });
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          firebaseUid: uid,
+          email: email || "",
+          name: name || "",
+          image: picture || null,
+        },
+      });
+    }
+
+    return NextResponse.json(user);
   } catch (error) {
     console.error("Error:", error);
     return NextResponse.json(false, { status: 500 });
