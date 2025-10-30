@@ -1,5 +1,13 @@
-import Link from "next/link";
+"use client";
+
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import axios from "axios";
+import { auth } from "@/app/firebase/config";
 
 type PasswordSectionProps = {
   isNew: boolean;
@@ -13,7 +21,39 @@ export default function PasswordSection({
   setStateAuth,
 }: PasswordSectionProps) {
   const [password, setPassword] = useState("");
-  const handleSubmit = async () => {};
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      let userCredential;
+      if (isNew) {
+        // Crear nueva cuenta
+        userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+      } else {
+        // Iniciar sesión existente
+        userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+      }
+      const token = await userCredential.user.getIdToken();
+      await axios.post("/api/users", { token });
+      router.push("/");
+    } catch (error: any) {
+      console.error(error);
+      if (error.code === "auth/invalid-credential") {
+        alert("Invalid credentials. Please check your password.");
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">

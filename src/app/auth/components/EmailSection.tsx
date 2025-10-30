@@ -1,12 +1,41 @@
+"use client";
+
+import { auth } from "@/app/firebase/config";
+import { fetchSignInMethodsForEmail } from "firebase/auth";
 import React from "react";
 
 type EmailSectionProps = {
   email: string;
   setEmail: React.Dispatch<React.SetStateAction<string>>;
+  setStateAuth: React.Dispatch<React.SetStateAction<number>>;
 };
 
-export default function EmailSection({ email, setEmail }: EmailSectionProps) {
-  const handleSubmit = async () => {};
+export default function EmailSection({
+  email,
+  setEmail,
+  setStateAuth,
+}: EmailSectionProps) {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const methods = await fetchSignInMethodsForEmail(auth, email);
+      // Si no esta registrado
+      if (methods.length === 0) {
+        setStateAuth(2);
+      }
+      // Si ya esta registrado
+      else if (methods.includes("password")) {
+        setStateAuth(1);
+      } else {
+        alert(
+          "This email is already associated with a Google or GitHub account."
+        );
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Was a problem checking the email");
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
