@@ -9,9 +9,10 @@ import { MdOutlinePets } from "react-icons/md";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
+import { FaUser, FaBoxOpen, FaStethoscope, FaSignOutAlt } from "react-icons/fa";
 
 export default function Navbar() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [showOptionsProfile, setShowOptionsProfile] = useState(false);
 
   return (
@@ -38,27 +39,68 @@ export default function Navbar() {
       <div className="flex items-center justify-end absolute top-0 right-0 md:static">
         <Link
           href="/"
-          className="flex items-center gap-2 rounded-2xl hover:bg-primary-hover px-3 py-2"
+          className="flex items-center gap-2 rounded-xl hover:bg-primary-hover px-3 py-2"
         >
           <FaComment className="text-3xl" />
           <h6 className="hidden md:block">Help</h6>
           <FaChevronDown className="hidden md:block" />
         </Link>
         {/* Boton de perfil o auth */}
-
-        <Link
-          href={user ? "/profile" : "/auth"}
-          className="flex items-center gap-2 rounded-2xl hover:bg-primary-hover px-3 py-2"
-          onMouseEnter={() => setShowOptionsProfile(true)}
-          onMouseLeave={() => setShowOptionsProfile(false)}
+        <div
+          className="relative flex items-center gap-2 rounded-xl hover:bg-primary-hover px-3 py-2"
+          onMouseEnter={() => user && setShowOptionsProfile(true)}
+          onMouseLeave={() => user && setShowOptionsProfile(false)}
         >
-          <FaUserCircle className="text-3xl" />
-          <h6 className="hidden md:block">Sign In</h6>
-          <FaChevronDown className="hidden md:block" />
-        </Link>
+          <Link
+            href={user ? "/profile" : "/auth"}
+            className="flex items-center gap-2"
+          >
+            <FaUserCircle className="text-3xl" />
+            <h6 className="hidden md:block">
+              {user ? user.displayName?.split(" ")[0] : "Sign In"}
+            </h6>
+            <FaChevronDown className="hidden md:block" />
+          </Link>
+          {/* Seccion de opciones de usuario */}
+          {showOptionsProfile && (
+            <section className="absolute top-[47px] right-0 flex flex-col p-2 rounded-xl bg-white text-black shadow-2xl w-max font-bold">
+              <Link
+                className="flex items-center gap-2 py-2 px-3 hover:bg-gray-200 rounded-xl"
+                href="/profile"
+              >
+                <FaUser />
+                Profile
+              </Link>
+
+              <Link
+                className="flex items-center gap-2 py-2 px-3 hover:bg-gray-200 rounded-xl"
+                href="/orders"
+              >
+                <FaBoxOpen />
+                Orders
+              </Link>
+
+              <Link
+                className="flex items-center gap-2 py-2 px-3 hover:bg-gray-200 rounded-xl"
+                href="/vet"
+              >
+                <FaStethoscope />
+                Connect with a vet
+              </Link>
+
+              <button
+                className="flex items-center gap-2 py-2 px-3 hover:bg-gray-200 rounded-xl text-left"
+                onClick={logout}
+              >
+                <FaSignOutAlt />
+                Sign Out
+              </button>
+            </section>
+          )}
+        </div>
         <Link
           href="/"
-          className="flex items-center gap-2 rounded-2xl hover:bg-primary-hover px-3 py-2"
+          className="flex items-center gap-2 rounded-xl hover:bg-primary-hover px-3 py-2"
         >
           <FaShoppingCart className="text-3xl" />
           <h6 className="hidden md:block">Cart</h6>

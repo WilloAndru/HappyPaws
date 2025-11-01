@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { FaPause, FaPlay } from "react-icons/fa6";
 import Slider from "../components/Slider";
 import axios from "axios";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Home() {
   const imagesSlider = ["img1.jpg", "img2.jpg", "img3.jpg"];
@@ -27,6 +28,7 @@ export default function Home() {
   const [slide, setSlide] = useState(0);
   const [isPauseSlider, setIsPauseSlider] = useState(false);
   const [products, setProducts] = useState([]);
+  const { user } = useAuth();
 
   // Obtenemos los 10 productos mas populares
   useEffect(() => {
@@ -56,13 +58,19 @@ export default function Home() {
       {/* Seccion de descuentos por primera compra */}
       <section className="flex justify-between gap-8 px-6 py-4 rounded-2xl bg-blue-200 items-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <h2>Hello!</h2>
-          <Link
-            href="/auth"
-            className="rounded-3xl text-white font-bold bg-primary hover:bg-primary-hover px-4 py-2 w-fit"
-          >
-            Sign in
-          </Link>
+          <h2>
+            {user
+              ? `Welcome back ${user?.displayName?.split(" ")[0]}!`
+              : "Hello!"}
+          </h2>
+          {!user && (
+            <Link
+              href="/auth"
+              className="rounded-3xl text-white font-bold bg-primary hover:bg-primary-hover px-4 py-2 w-fit"
+            >
+              Sign in
+            </Link>
+          )}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Link
