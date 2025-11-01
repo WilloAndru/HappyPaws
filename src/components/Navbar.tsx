@@ -7,8 +7,13 @@ import {
 } from "react-icons/fa";
 import { MdOutlinePets } from "react-icons/md";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
+import { useState } from "react";
 
 export default function Navbar() {
+  const { user } = useAuth();
+  const [showOptionsProfile, setShowOptionsProfile] = useState(false);
+
   return (
     <header className="z-1 top-0 left-0 text-white fixed flex flex-col gap-2 py-2 px-2 md:px-8 md:py-4 bg-primary w-full md:flex-row md:items-center md:justify-between">
       {/* Titulo */}
@@ -39,9 +44,13 @@ export default function Navbar() {
           <h6 className="hidden md:block">Help</h6>
           <FaChevronDown className="hidden md:block" />
         </Link>
+        {/* Boton de perfil o auth */}
+
         <Link
-          href="/auth"
+          href={user ? "/profile" : "/auth"}
           className="flex items-center gap-2 rounded-2xl hover:bg-primary-hover px-3 py-2"
+          onMouseEnter={() => setShowOptionsProfile(true)}
+          onMouseLeave={() => setShowOptionsProfile(false)}
         >
           <FaUserCircle className="text-3xl" />
           <h6 className="hidden md:block">Sign In</h6>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdOutlinePets } from "react-icons/md";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
@@ -15,12 +15,14 @@ import EmailSection from "./components/EmailSection";
 import PasswordSection from "./components/PasswordSection";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Auth() {
   // 0: Estado ingresando con el email, 1: Estado ingresando la contraseña para login, 2: Estado ingresando contraseña para registro
   const [stateAuth, setStateAuth] = useState(0);
   const [email, setEmail] = useState("");
   const router = useRouter();
+  const { user } = useAuth();
 
   // Login con google
   const handleSocialAuth = async (isGoogleProvider: boolean) => {
@@ -36,6 +38,13 @@ export default function Auth() {
       console.error("Error:", error);
     }
   };
+
+  // Proteccion de ruta y loading
+  useEffect(() => {
+    if (user) {
+      router.push("/");
+    }
+  }, [user, router]);
 
   return (
     <main className="flex flex-col gap-6 items-center justify-center w-screen h-screen bg-[url('/bgs/bgAuth.jpg')] bg-cover bg-center bg-no-repeat">

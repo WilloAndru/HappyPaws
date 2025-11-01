@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaPause, FaPlay } from "react-icons/fa6";
 import Slider from "../components/Slider";
-import { getTopProducts } from "@/hooks/useProducts";
+import axios from "axios";
 
 export default function Home() {
   const imagesSlider = ["img1.jpg", "img2.jpg", "img3.jpg"];
@@ -28,16 +28,20 @@ export default function Home() {
   const [isPauseSlider, setIsPauseSlider] = useState(false);
   const [products, setProducts] = useState([]);
 
+  // Obtenemos los 10 productos mas populares
   useEffect(() => {
-    // Obtenemos los productos mas relevantes
-    const fetchProducts = async () => {
-      const data = await getTopProducts();
-      setProducts(data);
+    const getTrendingProducts = async () => {
+      try {
+        const res = await axios.get("/api/products?sort=rating&limit=10");
+        setProducts(res.data);
+      } catch (error) {
+        console.error("Error:", error);
+      }
     };
-    fetchProducts();
+    getTrendingProducts();
   }, []);
 
-  // Funcion para deslisar las imagenes del slider automaticamente
+  // Funcion para deslizar las imagenes del slider automaticamente
   useEffect(() => {
     if (isPauseSlider) return;
     const interval = setInterval(() => {
