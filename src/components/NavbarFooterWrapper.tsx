@@ -19,7 +19,7 @@ export default function NavbarFooterWrapper({
         className={`flex-1 w-full ${
           isAuthRoute
             ? "flex items-center justify-center bg-gray-100"
-            : "max-w-[1400px] mx-auto p-5 pt-30"
+            : "max-w-[1400px] mx-auto p-5 pt-30 md:pt-25"
         }`}
       >
         {children}
