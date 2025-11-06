@@ -80,6 +80,7 @@ export default function PasswordSection({
           placeholder="Enter your Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
       </div>
       {/* Boton de continuar */}

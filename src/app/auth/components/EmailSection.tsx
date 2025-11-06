@@ -22,10 +22,12 @@ export default function EmailSection({
       // Si no esta registrado
       if (methods.length === 0) {
         setStateAuth(2);
+        console.log(methods);
       }
       // Si ya esta registrado
       else if (methods.includes("password")) {
         setStateAuth(1);
+        console.log(2);
       } else {
         alert(
           "This email is already associated with a Google or GitHub account."

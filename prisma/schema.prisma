@@ -9,14 +9,18 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(cuid())
-  firebaseUid   String   @unique
-  email         String   @unique
-  name          String?
-  image         String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id              String   @id @default(cuid())
+  firebaseUid     String   @unique
+  email           String   @unique
+  name            String?
+  image           String?
+  address         String?
+  customerId      String?  
+  paymentMethodId String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
+
 
 enum AnimalType {
   DOG

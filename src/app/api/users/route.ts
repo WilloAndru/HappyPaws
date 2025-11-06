@@ -18,12 +18,13 @@ export async function POST(req: Request) {
       where: { firebaseUid: uid },
     });
 
+    // Si el usuario no esta registrado
     if (!user) {
       user = await prisma.user.create({
         data: {
           firebaseUid: uid,
           email: email || "",
-          name: name || "",
+          name: name || email?.split("@")[0],
           image: picture || null,
         },
       });

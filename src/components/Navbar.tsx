@@ -90,7 +90,10 @@ export default function Navbar() {
 
               <button
                 className="flex items-center gap-2 py-2 px-3 hover:bg-gray-200 rounded-xl text-left"
-                onClick={logout}
+                onClick={() => {
+                  setShowOptionsProfile(false);
+                  logout();
+                }}
               >
                 <FaSignOutAlt />
                 Sign Out
