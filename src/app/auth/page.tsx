@@ -39,7 +39,7 @@ export default function Auth() {
     }
   };
 
-  // Proteccion de ruta y loading
+  // Proteccion de ruta
   useEffect(() => {
     if (user) {
       router.push("/");
