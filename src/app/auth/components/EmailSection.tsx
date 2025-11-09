@@ -18,11 +18,14 @@ export default function EmailSection({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const methods = await fetchSignInMethodsForEmail(auth, email);
+      const cleanEmail = email.trim().toLowerCase();
+      console.log("Checking clean email:", JSON.stringify(cleanEmail));
+      const methods = await fetchSignInMethodsForEmail(auth, cleanEmail);
+      console.log("Fetched methods:", methods);
+
       // Si no esta registrado
       if (methods.length === 0) {
         setStateAuth(2);
-        console.log(methods);
       }
       // Si ya esta registrado
       else if (methods.includes("password")) {

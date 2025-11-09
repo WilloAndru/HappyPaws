@@ -21,7 +21,6 @@ model User {
   updatedAt       DateTime @updatedAt
 }
 
-
 enum AnimalType {
   DOG
   CAT

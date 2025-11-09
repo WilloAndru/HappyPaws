@@ -9,7 +9,7 @@ import { MdOutlinePets } from "react-icons/md";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
-import { FaUser, FaBoxOpen, FaStethoscope, FaSignOutAlt } from "react-icons/fa";
+import { optionsUser } from "@/data/optionsUser";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -64,40 +64,30 @@ export default function Navbar() {
           {/* Seccion de opciones de usuario */}
           {showOptionsProfile && (
             <section className="absolute top-[47px] right-0 flex flex-col p-2 rounded-xl bg-white text-black shadow-2xl w-max font-bold">
-              <Link
-                className="flex items-center gap-2 py-2 px-3 hover:bg-gray-200 rounded-xl"
-                href="/profile"
-              >
-                <FaUser />
-                Profile
-              </Link>
-
-              <Link
-                className="flex items-center gap-2 py-2 px-3 hover:bg-gray-200 rounded-xl"
-                href="/orders"
-              >
-                <FaBoxOpen />
-                Orders
-              </Link>
-
-              <Link
-                className="flex items-center gap-2 py-2 px-3 hover:bg-gray-200 rounded-xl"
-                href="/vet"
-              >
-                <FaStethoscope />
-                Connect with a vet
-              </Link>
-
-              <button
-                className="flex items-center gap-2 py-2 px-3 hover:bg-gray-200 rounded-xl text-left"
-                onClick={() => {
-                  setShowOptionsProfile(false);
-                  logout();
-                }}
-              >
-                <FaSignOutAlt />
-                Sign Out
-              </button>
+              {optionsUser.map(({ label, href, icon: Icon }) => {
+                const classes =
+                  "flex items-center gap-2 py-2 px-3 hover:bg-gray-200 rounded-xl cursor-pointer";
+                // Si el elemento es un link
+                if (href) {
+                  return (
+                    <Link key={label} href={href} className={classes}>
+                      <Icon />
+                      {label}
+                    </Link>
+                  );
+                }
+                // Si el elemento es el boton de sign out
+                return (
+                  <button
+                    key={label}
+                    onClick={() => logout()}
+                    className={classes}
+                  >
+                    <Icon />
+                    {label}
+                  </button>
+                );
+              })}
             </section>
           )}
         </div>

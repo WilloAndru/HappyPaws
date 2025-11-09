@@ -26,6 +26,7 @@ export async function POST(req: Request) {
           email: email || "",
           name: name || email?.split("@")[0],
           image: picture || null,
+          address: "",
         },
       });
     }

@@ -30,9 +30,7 @@ export default function Auth() {
       const provider = isGoogleProvider
         ? new GoogleAuthProvider()
         : new GithubAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      const token = await result.user.getIdToken();
-      await axios.post("/api/users", { token });
+      await signInWithPopup(auth, provider);
       router.push("/");
     } catch (error) {
       console.error("Error:", error);
