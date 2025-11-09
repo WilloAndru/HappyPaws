@@ -1,13 +1,26 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { onAuthStateChanged, signOut, User } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "@/app/firebase/config";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
+export type DBUser = {
+  id: string;
+  firebaseUid: string;
+  email: string;
+  name?: string | null;
+  image?: string | null;
+  address?: string | null;
+  customerId?: string | null;
+  paymentMethodId?: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
 type AuthContextType = {
-  user: User | null;
+  user: DBUser | null;
   loading: boolean;
   logout: () => Promise<void>;
 };
@@ -19,7 +32,7 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<DBUser | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 

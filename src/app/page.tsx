@@ -59,9 +59,7 @@ export default function Home() {
       <section className="flex justify-between gap-8 px-6 py-4 rounded-2xl bg-blue-200 items-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <h2>
-            {user
-              ? `Welcome back ${user?.displayName?.split(" ")[0]}!`
-              : "Hello!"}
+            {user ? `Welcome back ${user.name?.split(" ")[0]}!` : "Hello!"}
           </h2>
           {!user && (
             <Link

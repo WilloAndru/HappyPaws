@@ -57,7 +57,7 @@ export default function Navbar() {
           >
             <FaUserCircle className="text-3xl" />
             <h6 className="hidden md:block">
-              {user ? user.displayName?.split(" ")[0] : "Sign In"}
+              {user ? user.name?.split(" ")[0] : "Sign In"}
             </h6>
             <FaChevronDown className="hidden md:block" />
           </Link>
