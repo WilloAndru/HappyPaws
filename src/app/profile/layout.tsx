@@ -45,7 +45,7 @@ export default function ProfileLayout({
           );
         })}
       </nav>
-      <section className="py-8 px-16 w-full">{children}</section>
+      <section className="py-[2vw] px-[4vw] w-full">{children}</section>
     </main>
   );
 }
