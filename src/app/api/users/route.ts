@@ -37,23 +37,3 @@ export async function POST(req: Request) {
     return NextResponse.json(false, { status: 500 });
   }
 }
-
-// Cambiar la direccion del usuario
-export async function PATCH(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
-  try {
-    const { address } = await req.json();
-
-    const user = await prisma.user.update({
-      where: { id: params.id },
-      data: { address },
-    });
-
-    return NextResponse.json(user);
-  } catch (error) {
-    console.error("Error", error);
-    return NextResponse.json(false, { status: 500 });
-  }
-}

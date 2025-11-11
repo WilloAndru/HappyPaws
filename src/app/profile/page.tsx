@@ -2,22 +2,31 @@
 
 import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoLocationSharp } from "react-icons/io5";
 import { MdEditSquare } from "react-icons/md";
 import { FaSignOutAlt } from "react-icons/fa";
+import { FaSave } from "react-icons/fa";
 import axios from "axios";
 
 export default function Profile() {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const [isEditAddress, setIsEditAddress] = useState(false);
-  const [address, setAddress] = useState(user?.address || "");
 
   const handleEditAddress = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await axios.patch(`/api/users/${user?.id}`, {
-      address: address,
-    });
+    try {
+      const res = await axios.patch(`/api/users/${user?.id}`, {
+        address: user?.address,
+      });
+      // Si la solicitud tiene exito actualizamos solo el address del user
+      if (res.data.status === 200) {
+        setUser((prev) => (prev ? { ...prev, address: user?.address } : prev));
+      }
+      setIsEditAddress(false);
+    } catch (error) {
+      console.error("Error updating address:", error);
+    }
   };
 
   return (
@@ -44,6 +53,7 @@ export default function Profile() {
             <h6>Address</h6>
           </div>
           <button
+            type="button"
             className="flex gap-2 items-center hover:text-primary"
             onClick={() => setIsEditAddress((prev) => !prev)}
           >
@@ -52,16 +62,25 @@ export default function Profile() {
           </button>
         </div>
         {isEditAddress ? (
-          <input
-            className="bg-gray-300 rounded-lg p-3 w-full"
-            placeholder="Please enter your current address"
-            type="text"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
+          <div className="w-full flex rounded-lg overflow-hidden">
+            <input
+              className="bg-gray-300 p-3 w-full"
+              placeholder="Please enter your current address"
+              type="text"
+              value={user?.address || ""}
+              onChange={(e) =>
+                setUser((prev) =>
+                  prev ? { ...prev, address: e.target.value } : prev
+                )
+              }
+            />
+            <button className="flex items-center gap-1 bg-primary p-3 text-white hover:bg-primary-hover">
+              <FaSave /> Save
+            </button>
+          </div>
         ) : (
-          <p className={address === "" ? "text-red-600" : ""}>
-            {address || "You haven't selected an address yet"}
+          <p className={user?.address === "" ? "text-red-600" : ""}>
+            {user?.address || "You haven't selected an address yet"}
           </p>
         )}
       </form>

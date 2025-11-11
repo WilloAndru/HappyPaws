@@ -13,7 +13,6 @@ import {
 import { auth } from "../firebase/config";
 import EmailSection from "./components/EmailSection";
 import PasswordSection from "./components/PasswordSection";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 

@@ -11,15 +11,16 @@ export default function ProfileLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { user, logout } = useAuth();
+  const { user, loading, logout } = useAuth();
   const router = useRouter();
 
   // Proteccion de ruta
   useEffect(() => {
+    if (loading) return;
     if (!user) {
-      router.push("/");
+      router.push("/auth");
     }
-  }, [user, router]);
+  }, [user, loading]);
 
   return (
     <main className="rounded-xl bg-gray-100 flex flex-col md:flex-row">

@@ -21,12 +21,14 @@ export type DBUser = {
 
 type AuthContextType = {
   user: DBUser | null;
+  setUser: React.Dispatch<React.SetStateAction<DBUser | null>>;
   loading: boolean;
   logout: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
+  setUser: () => {},
   loading: true,
   logout: async () => {},
 });
@@ -68,7 +70,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, logout }}>
+    <AuthContext.Provider value={{ user, setUser, loading, logout }}>
       {children}
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm z-50">
