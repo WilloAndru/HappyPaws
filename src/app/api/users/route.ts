@@ -16,6 +16,7 @@ export async function POST(req: Request) {
 
     let user = await prisma.user.findUnique({
       where: { firebaseUid: uid },
+      include: { addresses: true },
     });
 
     // Si el usuario no esta registrado
@@ -26,8 +27,18 @@ export async function POST(req: Request) {
           email: email || "",
           name: name || email?.split("@")[0],
           image: picture || null,
-          address: "",
+          cellphone: "",
+          addresses: {
+            create: {
+              name: "Home",
+              address: "",
+              city: "",
+              country: "",
+              isDefault: true,
+            },
+          },
         },
+        include: { addresses: true },
       });
     }
 

@@ -6,17 +6,26 @@ import { auth } from "@/app/firebase/config";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
+export type DBAddress = {
+  id: string;
+  userId: string;
+  name: string;
+  address: string;
+  city: string;
+  country: string;
+  isDefault: boolean;
+};
+
 export type DBUser = {
   id: string;
   firebaseUid: string;
   email: string;
-  name?: string | null;
-  image?: string | null;
-  address?: string | null;
-  customerId?: string | null;
-  paymentMethodId?: string | null;
-  createdAt: string;
-  updatedAt: string;
+  name: string | null;
+  image: string | null;
+  cellphone: string | null;
+  addresses: DBAddress[];
+  customerId: string | null;
+  paymentMethodId: string | null;
 };
 
 type AuthContextType = {
@@ -38,7 +47,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  // Funcion oara guardar el usuario en user de forma automatica
+  // Funcion para guardar el usuario en user de forma automatica
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {

@@ -7,11 +7,11 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { address } = await req.json();
+    const { address, city, country, isDefault } = await req.json();
 
-    await prisma.user.update({
+    await prisma.address.update({
       where: { id: params.id },
-      data: { address },
+      data: {},
     });
 
     return NextResponse.json({ status: 200 });

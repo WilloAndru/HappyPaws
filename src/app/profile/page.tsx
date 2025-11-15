@@ -2,16 +2,16 @@
 
 import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { IoLocationSharp } from "react-icons/io5";
-import { MdEditSquare } from "react-icons/md";
 import { FaSignOutAlt } from "react-icons/fa";
-import { FaSave } from "react-icons/fa";
+import { FaPlusCircle } from "react-icons/fa";
 import axios from "axios";
+import Address from "./components/Address";
 
 export default function Profile() {
   const { user, setUser } = useAuth();
-  const [isEditAddress, setIsEditAddress] = useState(false);
+  const [isAddAddress, setIsAddAddress] = useState(false);
 
   const handleEditAddress = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,6 +29,8 @@ export default function Profile() {
     }
   };
 
+  console.log(user);
+
   return (
     <main className="flex flex-col gap-10 justify-center text-start">
       {/* Secion de bienvienida */}
@@ -45,44 +47,25 @@ export default function Profile() {
       {/* Form de datos de domiciliio */}
       <form
         onSubmit={handleEditAddress}
-        className="flex flex-col items-start gap-4 text-[18px]"
+        className="flex flex-col items-start gap-6 text-[18px]"
       >
         <div className="flex justify-between w-full">
           <div className="flex gap-2 items-center">
             <IoLocationSharp />
-            <h6>Address</h6>
+            <h6>Addresses</h6>
           </div>
           <button
             type="button"
             className="flex gap-2 items-center hover:text-primary"
-            onClick={() => setIsEditAddress((prev) => !prev)}
+            onClick={() => setIsAddAddress((prev) => !prev)}
           >
-            <MdEditSquare />
-            <h6>{isEditAddress ? "Cancel" : "Edit"}</h6>
+            <FaPlusCircle />
+            <h6>{isAddAddress ? "Cancel" : "Add Address"}</h6>
           </button>
         </div>
-        {isEditAddress ? (
-          <div className="w-full flex rounded-lg overflow-hidden">
-            <input
-              className="bg-gray-300 p-3 w-full"
-              placeholder="Please enter your current address"
-              type="text"
-              value={user?.address || ""}
-              onChange={(e) =>
-                setUser((prev) =>
-                  prev ? { ...prev, address: e.target.value } : prev
-                )
-              }
-            />
-            <button className="flex items-center gap-1 bg-primary p-3 text-white hover:bg-primary-hover">
-              <FaSave /> Save
-            </button>
-          </div>
-        ) : (
-          <p className={user?.address === "" ? "text-red-600" : ""}>
-            {user?.address || "You haven't selected an address yet"}
-          </p>
-        )}
+        {user?.addresses.map((item) => (
+          <Address key={item.id} address={item} />
+        ))}
       </form>
       {/* Seccion de cerrar sesion */}
       <button className="w-full flex gap-2 items-center justify-center bg-primary px-6 py-3 rounded-2xl text-white hover:bg-primary-hover">
