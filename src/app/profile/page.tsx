@@ -1,35 +1,16 @@
 "use client";
 
-import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import React, { useState } from "react";
 import { IoLocationSharp } from "react-icons/io5";
 import { FaSignOutAlt } from "react-icons/fa";
 import { FaPlusCircle } from "react-icons/fa";
-import axios from "axios";
+import { useAuth } from "@/context/AuthContext";
 import Address from "./components/Address";
 
 export default function Profile() {
-  const { user, setUser } = useAuth();
   const [isAddAddress, setIsAddAddress] = useState(false);
-
-  const handleEditAddress = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const res = await axios.patch(`/api/users/${user?.id}`, {
-        address: user?.address,
-      });
-      // Si la solicitud tiene exito actualizamos solo el address del user
-      if (res.data.status === 200) {
-        setUser((prev) => (prev ? { ...prev, address: user?.address } : prev));
-      }
-      setIsEditAddress(false);
-    } catch (error) {
-      console.error("Error updating address:", error);
-    }
-  };
-
-  console.log(user);
+  const { user } = useAuth();
 
   return (
     <main className="flex flex-col gap-10 justify-center text-start">
@@ -44,12 +25,9 @@ export default function Profile() {
         />
         <h2>Hello! {user?.name}</h2>
       </section>
-      {/* Form de datos de domiciliio */}
-      <form
-        onSubmit={handleEditAddress}
-        className="flex flex-col items-start gap-6 text-[18px]"
-      >
-        <div className="flex justify-between w-full">
+      {/* Seccion de datos de domiciliio */}
+      <section className="flex flex-col items-start gap-6 text-[18px]">
+        <header className="flex justify-between w-full">
           <div className="flex gap-2 items-center">
             <IoLocationSharp />
             <h6>Addresses</h6>
@@ -62,11 +40,12 @@ export default function Profile() {
             <FaPlusCircle />
             <h6>{isAddAddress ? "Cancel" : "Add Address"}</h6>
           </button>
-        </div>
-        {user?.addresses.map((item) => (
-          <Address key={item.id} address={item} />
+        </header>
+        {isAddAddress && <Address />}
+        {user?.addresses.map((item, index) => (
+          <Address key={index} id={user.addresses[index].id} address={item} />
         ))}
-      </form>
+      </section>
       {/* Seccion de cerrar sesion */}
       <button className="w-full flex gap-2 items-center justify-center bg-primary px-6 py-3 rounded-2xl text-white hover:bg-primary-hover">
         <FaSignOutAlt /> Sign Out
