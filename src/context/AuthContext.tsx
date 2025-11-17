@@ -16,6 +16,22 @@ export type DBAddress = {
   isDefault: boolean;
 };
 
+export type DBItems = {
+  id: number;
+  orderId: number;
+  productId: number;
+  quantity: number;
+  price: number;
+};
+
+export type DBOrder = {
+  id: number;
+  userId: string;
+  status: string;
+  items: DBItems[];
+  total: number;
+};
+
 export type DBUser = {
   id: string;
   firebaseUid: string;
@@ -26,6 +42,7 @@ export type DBUser = {
   addresses: DBAddress[];
   customerId: string | null;
   paymentMethodId: string | null;
+  orders: DBOrder[];
 };
 
 type AuthContextType = {

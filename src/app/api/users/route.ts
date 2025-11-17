@@ -37,6 +37,9 @@ export async function POST(req: Request) {
               isDefault: true,
             },
           },
+          orders: {
+            create: [],
+          },
         },
         include: { addresses: true },
       });

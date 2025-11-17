@@ -10,13 +10,11 @@ import Address from "./components/Address";
 
 export default function Profile() {
   const [isAddAddress, setIsAddAddress] = useState(false);
-  const { user } = useAuth();
-
-  console.log(user?.addresses);
+  const { user, logout } = useAuth();
 
   return (
     <main className="flex flex-col gap-10 justify-center text-start">
-      {/* Secion de bienvienida */}
+      {/* Secion de bienvenida */}
       <section className="flex gap-4 items-center w-full">
         <Image
           src={(user?.image as string) ?? "/pets/cat.png"}
@@ -49,7 +47,10 @@ export default function Profile() {
         ))}
       </section>
       {/* Seccion de cerrar sesion */}
-      <button className="w-full flex gap-2 items-center justify-center bg-primary px-6 py-3 rounded-2xl text-white hover:bg-primary-hover">
+      <button
+        onClick={logout}
+        className="w-full flex gap-2 items-center justify-center bg-primary px-6 py-3 rounded-2xl text-white hover:bg-primary-hover"
+      >
         <FaSignOutAlt /> Sign Out
       </button>
     </main>

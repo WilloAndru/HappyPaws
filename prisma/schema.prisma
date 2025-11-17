@@ -18,6 +18,7 @@ model User {
   addresses       Address[]
   customerId      String?  
   paymentMethodId String?
+  orders          Order[]
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
@@ -65,8 +66,40 @@ model Product {
   category    Category  @default(FOOD)
   price       Float
   imageUrl    String
+  orderItems  OrderItem[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+}
+
+model Order {
+  id          Int         @id @default(autoincrement())
+  userId      String
+  user        User        @relation(fields: [userId], references: [id])
+  status      OrderStatus @default(PENDING)
+  items       OrderItem[]
+  total       Float       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model OrderItem {
+  id        Int         @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int
+  price     Float
+  order     Order       @relation(fields: [orderId], references: [id])
+  product   Product     @relation(fields: [productId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  COMPLETED
+  CANCELLED
 }
 
 

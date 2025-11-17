@@ -5,7 +5,6 @@ import { MdEditSquare } from "react-icons/md";
 import { FaSave } from "react-icons/fa";
 import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 
 type AddressProps = {
   id?: string;

@@ -16,12 +16,12 @@ export const optionsUser: OptionsUser[] = [
   },
   {
     label: "Orders",
-    href: "/orders",
+    href: "/profile/orders",
     icon: FaBoxOpen,
   },
   {
     label: "Configuration",
-    href: "/configuration",
+    href: "/profile/configuration",
     icon: IoMdSettings,
   },
   {
