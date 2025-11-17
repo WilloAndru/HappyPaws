@@ -12,6 +12,8 @@ export default function Profile() {
   const [isAddAddress, setIsAddAddress] = useState(false);
   const { user } = useAuth();
 
+  console.log(user?.addresses);
+
   return (
     <main className="flex flex-col gap-10 justify-center text-start">
       {/* Secion de bienvienida */}

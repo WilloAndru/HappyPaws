@@ -5,6 +5,7 @@ import { MdEditSquare } from "react-icons/md";
 import { FaSave } from "react-icons/fa";
 import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 type AddressProps = {
   id?: string;
@@ -48,7 +49,7 @@ export default function Address({ id, address }: AddressProps) {
         city: values.city,
         country: values.country,
       });
-      // Si la solicitud tiene y es 200 actualizamos
+      // Si la respuesta es 200 actualizamos direccion
       if (res.data.status === 200) {
         const updatedAddress = res.data;
         setUser((prev) => {
@@ -60,9 +61,19 @@ export default function Address({ id, address }: AddressProps) {
             ),
           };
         });
-      } else if (res.data.status === 201) {
-        const createdAddress = res.data.created;
       }
+      // Si la respuesta es 201 creamos nueva direccion
+      else if (res.data.status === 201) {
+        const createdAddress = res.data.created;
+        setUser((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            addresses: [...prev.addresses, createdAddress],
+          };
+        });
+      }
+      window.location.reload();
       setIsEdit(false);
     } catch (error) {
       console.error("Error updating address:", error);
@@ -77,7 +88,7 @@ export default function Address({ id, address }: AddressProps) {
         {isEdit ? (
           <div className="flex gap-4 items-center">
             <input
-              className="rounded-[6px] px-2 bg-gray-200 font-bold"
+              className="rounded-[6px] px-2 bg-gray-200 max-w-[100px] md:max-w-none font-bold"
               placeholder="Enter the name address"
               value={values.name}
               onChange={(e) =>
