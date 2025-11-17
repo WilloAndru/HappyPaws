@@ -124,7 +124,6 @@ export default function Address({ id, address }: AddressProps) {
           )}
           {id && (
             <button
-              type="button"
               className="flex gap-2 items-center hover:text-primary"
               onClick={() => setIsEdit((prev) => !prev)}
             >

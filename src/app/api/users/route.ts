@@ -51,3 +51,22 @@ export async function POST(req: Request) {
     return NextResponse.json(false, { status: 500 });
   }
 }
+
+// Actualizar numero de telefono
+export async function PATCH(req: Request) {
+  try {
+    const { userId, cellphone } = await req.json();
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        cellphone: cellphone || null,
+      },
+    });
+
+    return NextResponse.json({ status: 200 });
+  } catch (error) {
+    console.error("Error", error);
+    return NextResponse.json(false, { status: 500 });
+  }
+}
