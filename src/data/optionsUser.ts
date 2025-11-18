@@ -1,6 +1,5 @@
 import { IconType } from "react-icons";
-import { FaUser, FaBoxOpen, FaSignOutAlt } from "react-icons/fa";
-import { IoMdSettings } from "react-icons/io";
+import { FaUser, FaBoxOpen, FaStar, FaSignOutAlt } from "react-icons/fa";
 
 export type OptionsUser = {
   label: string;
@@ -20,9 +19,9 @@ export const optionsUser: OptionsUser[] = [
     icon: FaBoxOpen,
   },
   {
-    label: "Configuration",
-    href: "/profile/configuration",
-    icon: IoMdSettings,
+    label: "Wishlist",
+    href: "/profile/wishlist",
+    icon: FaStar,
   },
   {
     label: "Sign Out",

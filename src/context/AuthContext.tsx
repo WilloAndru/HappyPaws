@@ -32,6 +32,12 @@ export type DBOrder = {
   total: number;
 };
 
+export type DBWhishList = {
+  id: number;
+  userId: string;
+  productId: string;
+};
+
 export type DBUser = {
   id: string;
   firebaseUid: string;
@@ -43,6 +49,7 @@ export type DBUser = {
   customerId: string | null;
   paymentMethodId: string | null;
   orders: DBOrder[];
+  whishList: DBWhishList[];
 };
 
 type AuthContextType = {
