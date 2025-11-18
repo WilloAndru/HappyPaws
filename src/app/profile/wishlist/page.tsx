@@ -6,6 +6,7 @@ import React from "react";
 import { FaStar, FaBoxes } from "react-icons/fa";
 import { BiSolidPurchaseTag } from "react-icons/bi";
 import axios from "axios";
+import Favorite from "./components/Favorite";
 
 export default function WishList() {
   const { user, setUser } = useAuth();
@@ -18,28 +19,25 @@ export default function WishList() {
       });
       // Si se elimina el producto de favoritos
       if (res.data.status === 200) {
-        console.log(res.data);
-
         setUser((prev) => {
           if (!prev) return prev;
           return {
             ...prev,
-            whishList: prev.whishList.filter((i) => i.id !== res.data.id),
+            wishlist: prev.wishlist.filter((i) => i.id !== res.data.id),
           };
         });
       }
       // Si se agrega el producto a favoritos
       else if (res.data.status === 201) {
-        console.log(res.data);
-
         setUser((prev) => {
           if (!prev) return prev;
           return {
             ...prev,
-            whishList: [...prev.whishList, res.data.item],
+            wishlist: [...prev.wishlist, res.data.item],
           };
         });
       }
+      window.location.reload();
     } catch (error) {
       console.error("Error handle product", error);
     }
@@ -52,7 +50,7 @@ export default function WishList() {
         <FaStar className="text-2xl" />
         <h2>Whishlist</h2>
       </header>
-      {!user?.whishList ? (
+      {user?.wishlist.length === 0 ? (
         // Seccion de no haz añadido ningun favorito
         <section className="flex flex-col gap-8 text-center items-center justify-center w-full">
           <h2>You haven’t added any favorite products yet.</h2>
@@ -67,9 +65,13 @@ export default function WishList() {
         </section>
       ) : (
         // Seccion de lista de deseos
-        <section></section>
+        <section className="flex flex-col gap-2">
+          {user?.wishlist.map((item) => {
+            return <Favorite productId={item.productId} />;
+          })}
+        </section>
       )}
-      <button></button>
+      <button onClick={handleProduct}>ACA</button>
     </main>
   );
 }

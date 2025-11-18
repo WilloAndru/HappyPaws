@@ -19,7 +19,7 @@ model User {
   customerId      String?  
   paymentMethodId String?
   orders          Order[]
-  wishList        WishItem[]
+  wishlist        WishItem[]
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
@@ -68,7 +68,7 @@ model Product {
   price       Float
   imageUrl    String
   orderItems  OrderItem[]
-  wishList    WishItem[]
+  wishlist    WishItem[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }

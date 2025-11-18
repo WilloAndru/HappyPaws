@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import NavbarFooterWrapper from "@/components/NavbarFooterWrapper"; // Se decidio asi por 2 errores
-import { AuthProvider } from "@/context/AuthContext";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: "HappyPaws",
@@ -16,9 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen flex flex-col text-gray-800">
-        <AuthProvider>
+        <Providers>
           <NavbarFooterWrapper>{children}</NavbarFooterWrapper>
-        </AuthProvider>
+        </Providers>
       </body>
     </html>
   );

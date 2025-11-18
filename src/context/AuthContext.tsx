@@ -35,7 +35,7 @@ export type DBOrder = {
 export type DBWhishItem = {
   id: number;
   userId: string;
-  productId: string;
+  productId: number;
 };
 
 export type DBUser = {
@@ -49,7 +49,7 @@ export type DBUser = {
   customerId: string | null;
   paymentMethodId: string | null;
   orders: DBOrder[];
-  whishList: DBWhishItem[];
+  wishlist: DBWhishItem[];
 };
 
 type AuthContextType = {

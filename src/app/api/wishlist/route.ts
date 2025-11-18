@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     });
     // Si esta, lo eliminamos de favoritos
     if (wishItem) {
-      const item = await prisma.wishItem.delete({
+      await prisma.wishItem.delete({
         where: {
           userId_productId: { userId, productId },
         },
