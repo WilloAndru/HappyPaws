@@ -63,7 +63,7 @@ export default function Address({ id, address }: AddressProps) {
       }
       // Si la respuesta es 201 creamos nueva direccion
       else if (res.data.status === 201) {
-        const createdAddress = res.data.created;
+        const createdAddress = res.data;
         setUser((prev) => {
           if (!prev) return prev;
           return {
