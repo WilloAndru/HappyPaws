@@ -3,10 +3,11 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaPause, FaPlay } from "react-icons/fa6";
 import Slider from "../components/Slider";
-import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
+import { useTrendingProducts } from "./hooks/useProducts";
 
 export default function Home() {
+  const { data: products, isLoading } = useTrendingProducts(); // Obtenemos los productos en tendencia
   const imagesSlider = ["img1.jpg", "img2.jpg", "img3.jpg"];
   const imagesPets = [
     "cat.png",
@@ -24,24 +25,9 @@ export default function Home() {
     "accessories.png",
     "habitat.png",
   ];
-
   const [slide, setSlide] = useState(0);
   const [isPauseSlider, setIsPauseSlider] = useState(false);
-  const [products, setProducts] = useState([]);
   const { user } = useAuth();
-
-  // Obtenemos los 10 productos mas populares
-  useEffect(() => {
-    const getTrendingProducts = async () => {
-      try {
-        const res = await axios.get("/api/products?sort=rating&limit=10");
-        setProducts(res.data);
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
-    getTrendingProducts();
-  }, []);
 
   // Funcion para deslizar las imagenes del slider automaticamente
   useEffect(() => {
@@ -52,6 +38,8 @@ export default function Home() {
 
     return () => clearInterval(interval);
   }, [isPauseSlider]);
+
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <main className="flex gap-8 flex-col">

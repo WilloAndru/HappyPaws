@@ -5,46 +5,13 @@ import Link from "next/link";
 import React from "react";
 import { FaStar, FaBoxes } from "react-icons/fa";
 import { BiSolidPurchaseTag } from "react-icons/bi";
-import axios from "axios";
 import Favorite from "./components/Favorite";
 
 export default function WishList() {
-  const { user, setUser } = useAuth();
-
-  const handleProduct = async () => {
-    try {
-      const res = await axios.post("/api/wishlist/", {
-        userId: user?.id,
-        productId: 1,
-      });
-      // Si se elimina el producto de favoritos
-      if (res.data.status === 200) {
-        setUser((prev) => {
-          if (!prev) return prev;
-          return {
-            ...prev,
-            wishlist: prev.wishlist.filter((i) => i.id !== res.data.id),
-          };
-        });
-      }
-      // Si se agrega el producto a favoritos
-      else if (res.data.status === 201) {
-        setUser((prev) => {
-          if (!prev) return prev;
-          return {
-            ...prev,
-            wishlist: [...prev.wishlist, res.data.item],
-          };
-        });
-      }
-      window.location.reload();
-    } catch (error) {
-      console.error("Error handle product", error);
-    }
-  };
+  const { user } = useAuth();
 
   return (
-    <main className="flex flex-col gap-10 justify-center text-start">
+    <main className="flex flex-col gap-4 justify-center text-start">
       {/* Header */}
       <header className="flex gap-3 items-center">
         <FaStar className="text-2xl" />
@@ -65,13 +32,12 @@ export default function WishList() {
         </section>
       ) : (
         // Seccion de lista de deseos
-        <section className="flex flex-col gap-2">
+        <section className="flex flex-col gap-4">
           {user?.wishlist.map((item) => {
-            return <Favorite productId={item.productId} />;
+            return <Favorite key={item.id} productId={item.productId} />;
           })}
         </section>
       )}
-      <button onClick={handleProduct}>ACA</button>
     </main>
   );
 }
