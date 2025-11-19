@@ -21,7 +21,7 @@ export default function Navbar() {
   const [debounced, setDebounced] = useState(searchText); // Retraso
   const { data } = useSearchProducts(debounced); // Lista de las 8 recomendaciones obtenidas
 
-  // Funcion que maneja el retraso de 300ms para mandar la solicitud productos recomendados
+  // Funcion que maneja el retraso de 300ms para mandar la solicitud de productos recomendados
   useEffect(() => {
     const handler = setTimeout(() => setDebounced(searchText), 300);
     return () => clearTimeout(handler);
@@ -49,7 +49,7 @@ export default function Navbar() {
         </button>
 
         {data?.results?.length > 0 && (
-          <div className="absolute left-0 top-full mt-0.5 w-full bg-white shadow-lg rounded-lg z-50 flex flex-col text-black">
+          <div className="absolute left-0 top-full mt-0.5 w-full bg-white shadow-lg rounded-lg flex flex-col text-black">
             {data.results.map((p: any) => (
               <Link
                 href={`/product/${p.slug}`} // o como tengas la ruta
