@@ -111,7 +111,7 @@ export default function Profile() {
         {isEditCellphone ? (
           <input
             type="text"
-            value={user?.cellphone || ""}
+            value={cellphone || ""}
             onChange={(e) => {
               setChangePhone(true);
               setCellphone(e.target.value);

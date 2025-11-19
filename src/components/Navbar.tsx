@@ -8,12 +8,24 @@ import {
 import { MdOutlinePets } from "react-icons/md";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { optionsUser } from "@/data/optionsUser";
+import { useSearchProducts } from "@/app/hooks/useProducts";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
   const [showOptionsProfile, setShowOptionsProfile] = useState(false);
+
+  // Variables de la barra de busqueda
+  const [searchText, setSearchText] = useState("");
+  const [debounced, setDebounced] = useState(searchText); // Retraso
+  const { data } = useSearchProducts(debounced); // Lista de las 8 recomendaciones obtenidas
+
+  // Funcion que maneja el retraso de 300ms para mandar la solicitud productos recomendados
+  useEffect(() => {
+    const handler = setTimeout(() => setDebounced(searchText), 300);
+    return () => clearTimeout(handler);
+  }, [searchText]);
 
   return (
     <header className="z-1 top-0 left-0 text-white fixed flex flex-col gap-2 py-2 px-2 md:px-8 md:py-4 bg-primary w-full md:flex-row md:items-center md:justify-between">
@@ -24,19 +36,35 @@ export default function Navbar() {
       </Link>
 
       {/* Barra de búsqueda */}
-      <form className="flex order-2 md:order-none md:flex-1 md:mx-6 pl-2 rounded-lg border-0 bg-white shadow-sm md:max-w-[40vw]">
-        <input
-          className="w-full text-black px-3 py-2 outline-none"
-          type="text"
-          placeholder="Search"
-        />
-        <button className="text-primary text-[1.2rem] px-4 py-2">
-          <FaSearch />
-        </button>
-      </form>
+      <div className="flex relative">
+        <form className="flex order-2 md:order-none md:flex-1 md:mx-6 pl-2 rounded-lg border-0 bg-white shadow-sm md:max-w-[40vw]">
+          <input
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            className="w-full text-black px-3 py-2 outline-none"
+            type="text"
+            placeholder="Search"
+          />
+          <button className="text-primary text-[1.2rem] px-4 py-2">
+            <FaSearch />
+          </button>
+        </form>
+        <div className="flex flex-col absolute top-10 bg-white rounded-lg text-black">
+          {data?.results?.map((p: any) => (
+            <Link
+              href="/"
+              className="px-3 py-2 hover:bg-gray-100 rounded-xl"
+              key={p.id}
+            >
+              {p.name}
+            </Link>
+          ))}
+        </div>
+      </div>
 
       {/* Botones de acción */}
       <div className="flex items-center justify-end absolute top-0 right-0 md:static">
+        {/* Boton de chat  */}
         <Link
           href="/"
           className="flex items-center gap-2 rounded-xl hover:bg-primary-hover px-3 py-2"
@@ -91,6 +119,7 @@ export default function Navbar() {
             </section>
           )}
         </div>
+        {/* Boton de carrito */}
         <Link
           href="/"
           className="flex items-center gap-2 rounded-xl hover:bg-primary-hover px-3 py-2"

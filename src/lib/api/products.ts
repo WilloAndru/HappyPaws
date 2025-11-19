@@ -14,3 +14,8 @@ export async function getProductById(id: number) {
   const res = await axios.get(`/api/products/${id}`);
   return res.data;
 }
+
+export async function getSearchProducts(query: string) {
+  const res = await axios.get(`/api/search?q=${query}`);
+  return res.data;
+}
