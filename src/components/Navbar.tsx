@@ -36,31 +36,32 @@ export default function Navbar() {
       </Link>
 
       {/* Barra de búsqueda */}
-      <div className="flex relative">
-        <form className="flex order-2 md:order-none md:flex-1 md:mx-6 pl-2 rounded-lg border-0 bg-white shadow-sm md:max-w-[40vw]">
-          <input
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            className="w-full text-black px-3 py-2 outline-none"
-            type="text"
-            placeholder="Search"
-          />
-          <button className="text-primary text-[1.2rem] px-4 py-2">
-            <FaSearch />
-          </button>
-        </form>
-        <div className="flex flex-col absolute top-10 bg-white rounded-lg text-black">
-          {data?.results?.map((p: any) => (
-            <Link
-              href="/"
-              className="px-3 py-2 hover:bg-gray-100 rounded-xl"
-              key={p.id}
-            >
-              {p.name}
-            </Link>
-          ))}
-        </div>
-      </div>
+      <form className="relative flex order-2 md:order-none md:flex-1 md:mx-6 pl-2 rounded-lg border-0 bg-white shadow-sm md:max-w-[40vw]">
+        <input
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          className="w-full text-black px-3 py-2 outline-none"
+          type="text"
+          placeholder="Search"
+        />
+        <button className="text-primary text-[1.2rem] px-4 py-2">
+          <FaSearch />
+        </button>
+
+        {data?.results?.length > 0 && (
+          <div className="absolute left-0 top-full mt-0.5 w-full bg-white shadow-lg rounded-lg z-50 flex flex-col text-black">
+            {data.results.map((p: any) => (
+              <Link
+                href={`/product/${p.slug}`} // o como tengas la ruta
+                className="px-4 py-3 rounded-lg hover:bg-gray-100"
+                key={p.id}
+              >
+                {p.name}
+              </Link>
+            ))}
+          </div>
+        )}
+      </form>
 
       {/* Botones de acción */}
       <div className="flex items-center justify-end absolute top-0 right-0 md:static">
