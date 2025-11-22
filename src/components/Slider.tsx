@@ -51,7 +51,7 @@ export default function Slider({ list, isCategory }: SliderProps) {
               <div className="flex flex-col gap-1 px-4 py-2">
                 <h6>{capitalized}</h6>
                 {!isCategory && <Rating rating={item.rating} />}
-                {!isCategory && <h6>${item.price}</h6>}
+                {!isCategory && <h6>${item.price * (1 - item.discount)}</h6>}
               </div>
             </Link>
           );
