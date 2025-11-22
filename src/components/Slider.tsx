@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { Star } from "lucide-react";
+import Rating from "./Rating";
 
 type SliderProps = {
   list: any[];
@@ -13,6 +13,7 @@ export default function Slider({ list, isCategory }: SliderProps) {
 
   return (
     <div className="relative flex items-center overflow-hidden">
+      {/* Boton izquierdo */}
       <button
         onClick={() => setStep((prev) => prev - 1)}
         className={`${
@@ -21,6 +22,7 @@ export default function Slider({ list, isCategory }: SliderProps) {
       >
         <FaArrowLeft />
       </button>
+      {/* Contenedor de los items */}
       <div
         className="flex transition-transform duration-500 ease-in-out gap-[1%] w-full"
         style={{ transform: `translateX(-${step * 101}%)` }}
@@ -28,8 +30,8 @@ export default function Slider({ list, isCategory }: SliderProps) {
         {list.map((item, index) => {
           const name = isCategory ? item.replace(".png", "") : item.name;
           const capitalized = name.charAt(0).toUpperCase() + name.slice(1);
-
           return (
+            // Item a mostar, ya sea un producto o una categoria
             <Link
               className={`min-w-[33%] md:min-w-[19.1%] flex flex-col rounded-sm ${
                 isCategory
@@ -48,28 +50,14 @@ export default function Slider({ list, isCategory }: SliderProps) {
               />
               <div className="flex flex-col gap-1 px-4 py-2">
                 <h6>{capitalized}</h6>
-                {!isCategory && (
-                  <div className="flex items-center space-x-1">
-                    <p>{item.rating}</p>
-                    {[1, 2, 3, 4, 5].map((i) => (
-                      <Star
-                        key={i}
-                        size={15}
-                        className={`${
-                          i <= item.rating
-                            ? "fill-yellow-500 text-yellow-500"
-                            : "text-gray-300"
-                        } transition-all duration-200`}
-                      />
-                    ))}
-                  </div>
-                )}
+                {!isCategory && <Rating rating={item.rating} />}
                 {!isCategory && <h6>${item.price}</h6>}
               </div>
             </Link>
           );
         })}
       </div>
+      {/* Boton derecho */}
       <button
         onClick={() => setStep((prev) => prev + 1)}
         className={`${

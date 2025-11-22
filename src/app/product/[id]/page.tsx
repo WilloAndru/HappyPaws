@@ -5,12 +5,13 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
 import { Heart } from "lucide-react";
+import Rating from "@/components/Rating";
 
 export default function Product() {
   const { id } = useParams();
   const productId = Number(id);
-  const { data, isLoading } = useProduct(productId);
   const [isFav, setIsFav] = useState(false);
+  const { data, isLoading } = useProduct(productId);
 
   if (isLoading) return <p>Loading...</p>;
 
@@ -31,6 +32,7 @@ export default function Product() {
       </section>
       {/* Seccion de detalles del producto */}
       <section className="px-6 py-4 flex flex-col gap-2 rounded-sm bg-white md:w-1/2">
+        {/* Nombre y boton de favoritos */}
         <header className="flex justify-between items-center">
           <h2>{data.name}</h2>
           <Heart
@@ -40,6 +42,7 @@ export default function Product() {
             onClick={handleAddFavorite}
           />
         </header>
+        <Rating rating={data.rating} />
       </section>
     </main>
   );
