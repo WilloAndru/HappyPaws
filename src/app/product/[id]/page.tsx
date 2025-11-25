@@ -24,6 +24,13 @@ export default function Product() {
     useProductsByCategory(product?.category || "", {
       enabled: !!product,
     });
+  // Actualiza isFav cuando user o product cambien
+  useEffect(() => {
+    if (!user || !product) return;
+
+    const fav = user.wishlist.some((item) => item.productId === product.id);
+    setIsFav(fav);
+  }, [user, product]);
 
   // Opciones del select del stock y su estado
   const options = [
@@ -36,43 +43,37 @@ export default function Product() {
   const [qty, setQty] = useState<OptionType>(options[0]);
 
   // Funcion para añadir el producto a favoritos
-  useEffect(() => {
-    if (!user?.id) return;
-    const fetchFav = async () => {
-      try {
-        console.log(user?.id, productId);
-        const res = await updateWishlist(user?.id, productId);
-        // Si ya estaba en favoritos lo removemos
-        if (res === 200) {
-          setIsFav(false);
-          setUser((prev) => {
-            if (!prev) return prev;
-            return {
-              ...prev,
-              wishlist: prev.wishlist.filter(
-                (item) =>
-                  item.productId !== productId || item.userId !== user!.id
-              ),
-            };
-          });
-        }
-        // Si no entonces lo agregamos a favoritos
-        else if (res === 201) {
-          setIsFav(true);
-          setUser((prev) => {
-            if (!prev) return prev;
-            return {
-              ...prev,
-              wishlist: [...prev.wishlist, { userId: user!.id, productId }],
-            };
-          });
-        }
-      } catch (error) {
-        console.error("Error", error);
+  const toggleFavorite = async () => {
+    try {
+      // Actualizamos el estado local primero para feedback inmediato
+      setIsFav((prev) => !prev);
+      await updateWishlist(user!.id, productId);
+      // Si estaba en favoritos → quitar
+      if (isFav) {
+        setUser((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            wishlist: prev.wishlist.filter(
+              (item) => item.productId !== productId
+            ),
+          };
+        });
       }
-    };
-    fetchFav();
-  }, [isFav]);
+      // Si NO estaba en favoritos → agregar
+      else {
+        setUser((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            wishlist: [...prev.wishlist, { userId: user!.id, productId }],
+          };
+        });
+      }
+    } catch (error) {
+      console.error("Error", error);
+    }
+  };
 
   if (isLoadingProduct || isLoadingCategory) return <p>Loading...</p>;
 
@@ -98,7 +99,7 @@ export default function Product() {
               className={`text-primary text-2xl cursor-pointer ${
                 isFav ? "fill-primary" : ""
               }`}
-              onClick={() => setIsFav((prev) => !prev)}
+              onClick={toggleFavorite}
             />
           </header>
           {/* Rating */}

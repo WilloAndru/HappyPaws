@@ -6,34 +6,40 @@ export async function POST(req: Request) {
   try {
     const { userId, productId } = await req.json();
 
-    // Buscamos el item favorito
-    const wishItem = await prisma.wishItem.findUnique({
+    if (!userId || !productId) {
+      return NextResponse.json(
+        { error: "Missing userId or productId" },
+        { status: 400 }
+      );
+    }
+
+    // Buscar si ya existe
+    const existing = await prisma.wishItem.findUnique({
       where: {
         userId_productId: { userId, productId },
       },
     });
 
-    // Si esta, lo eliminamos de favoritos
-    if (wishItem) {
+    // Si existe → eliminar
+    if (existing) {
       await prisma.wishItem.delete({
-        where: {
-          userId_productId: { userId, productId },
-        },
+        where: { userId_productId: { userId, productId } },
       });
-      return NextResponse.json({ status: 200 });
+
+      return NextResponse.json({ message: "removed" }, { status: 200 });
     }
-    // Si no esta, lo agregamos a favoritos
-    else {
-      const newItem = await prisma.wishItem.create({
-        data: {
-          userId,
-          productId,
-        },
-      });
-      return NextResponse.json({ status: 201 });
-    }
+
+    // Si NO existe → crear
+    await prisma.wishItem.create({
+      data: { userId, productId },
+    });
+
+    return NextResponse.json({ message: "added" }, { status: 201 });
   } catch (error) {
-    console.error("Error", error);
-    return NextResponse.json(false, { status: 500 });
+    console.error("Wishlist error:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
