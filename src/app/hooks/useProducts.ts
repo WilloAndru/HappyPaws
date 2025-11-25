@@ -12,10 +12,11 @@ export function useTrendingProducts() {
   });
 }
 
-export function useProduct(id: number) {
+export function useProduct(id: number | null) {
   return useQuery({
     queryKey: ["product", id],
-    queryFn: () => getProductById(id),
+    queryFn: () => getProductById(id as number),
+    enabled: id !== null,
   });
 }
 

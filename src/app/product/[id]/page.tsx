@@ -6,12 +6,23 @@ import { useParams } from "next/navigation";
 import React, { useState } from "react";
 import { Heart } from "lucide-react";
 import Rating from "@/components/Rating";
+import { Select } from "@/components/Select";
 
 export default function Product() {
   const { id } = useParams();
   const productId = Number(id);
   const [isFav, setIsFav] = useState(false);
   const { data, isLoading } = useProduct(productId);
+  const [qty, setQty] = useState(1);
+
+  // Opciones del select de catidad de stock a comprar
+  const options = [
+    { value: 1, label: "1 unit" },
+    { value: 2, label: "2 units" },
+    { value: 3, label: "3 units" },
+    { value: 4, label: "4 units" },
+    { value: 5, label: "5 units" },
+  ];
 
   if (isLoading) return <p>Loading...</p>;
 
@@ -58,7 +69,15 @@ export default function Product() {
         <p>{data.description}</p>
         {/* Stocks */}
         <section>
-          <h6>Stock available</h6>
+          <h6 className="mb-1">Stock</h6>
+          <div className="flex items-center gap-3">
+            <Select
+              list={[1, 2, 3, 4, 5]}
+              value={qty}
+              onChange={(v) => setQty(v)}
+            />
+            <p className="text-gray-500">{data.stock} units left</p>
+          </div>
         </section>
         {/* Boton de compra y carrito */}
         <section className="flex flex-col gap-1">
