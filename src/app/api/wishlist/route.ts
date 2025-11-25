@@ -12,6 +12,7 @@ export async function POST(req: Request) {
         userId_productId: { userId, productId },
       },
     });
+
     // Si esta, lo eliminamos de favoritos
     if (wishItem) {
       await prisma.wishItem.delete({
@@ -19,9 +20,9 @@ export async function POST(req: Request) {
           userId_productId: { userId, productId },
         },
       });
-      return NextResponse.json({ status: 200, id: wishItem.id });
+      return NextResponse.json({ status: 200 });
     }
-    // Si no esta, lo agregamos de favoritos
+    // Si no esta, lo agregamos a favoritos
     else {
       const newItem = await prisma.wishItem.create({
         data: {
@@ -29,7 +30,7 @@ export async function POST(req: Request) {
           productId,
         },
       });
-      return NextResponse.json({ status: 201, item: newItem });
+      return NextResponse.json({ status: 201 });
     }
   } catch (error) {
     console.error("Error", error);

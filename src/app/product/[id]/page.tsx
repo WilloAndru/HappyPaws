@@ -3,14 +3,17 @@
 import { useProduct, useProductsByCategory } from "@/app/hooks/useProducts";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Heart } from "lucide-react";
 import Rating from "@/components/Rating";
 import { Select, OptionType } from "@/components/Select";
 import { FaCartArrowDown } from "react-icons/fa";
 import Slider from "@/components/Slider";
+import { useAuth } from "@/context/AuthContext";
+import { updateWishlist } from "@/lib/api/wishlist";
 
 export default function Product() {
+  const { user, setUser } = useAuth();
   const { id } = useParams();
   const productId = Number(id);
   const [isFav, setIsFav] = useState(false);
@@ -33,9 +36,43 @@ export default function Product() {
   const [qty, setQty] = useState<OptionType>(options[0]);
 
   // Funcion para añadir el producto a favoritos
-  const handleAddFavorite = async () => {
-    setIsFav((prev) => !prev);
-  };
+  useEffect(() => {
+    if (!user?.id) return;
+    const fetchFav = async () => {
+      try {
+        console.log(user?.id, productId);
+        const res = await updateWishlist(user?.id, productId);
+        // Si ya estaba en favoritos lo removemos
+        if (res === 200) {
+          setIsFav(false);
+          setUser((prev) => {
+            if (!prev) return prev;
+            return {
+              ...prev,
+              wishlist: prev.wishlist.filter(
+                (item) =>
+                  item.productId !== productId || item.userId !== user!.id
+              ),
+            };
+          });
+        }
+        // Si no entonces lo agregamos a favoritos
+        else if (res === 201) {
+          setIsFav(true);
+          setUser((prev) => {
+            if (!prev) return prev;
+            return {
+              ...prev,
+              wishlist: [...prev.wishlist, { userId: user!.id, productId }],
+            };
+          });
+        }
+      } catch (error) {
+        console.error("Error", error);
+      }
+    };
+    fetchFav();
+  }, [isFav]);
 
   if (isLoadingProduct || isLoadingCategory) return <p>Loading...</p>;
 
@@ -61,7 +98,7 @@ export default function Product() {
               className={`text-primary text-2xl cursor-pointer ${
                 isFav ? "fill-primary" : ""
               }`}
-              onClick={handleAddFavorite}
+              onClick={() => setIsFav((prev) => !prev)}
             />
           </header>
           {/* Rating */}

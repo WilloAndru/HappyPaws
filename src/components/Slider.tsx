@@ -25,7 +25,7 @@ export default function Slider({ list, isCategory }: SliderProps) {
       {/* Contenedor de los items */}
       <div
         className="flex transition-transform duration-500 ease-in-out gap-[1%] w-full"
-        style={{ transform: `translateX(-${step * 101}%)` }}
+        style={{ transform: `translateX(-${step * 100}%)` }}
       >
         {list.map((item, index) => {
           const name = isCategory ? item.replace(".png", "") : item.name;
@@ -36,7 +36,7 @@ export default function Slider({ list, isCategory }: SliderProps) {
               className={`min-w-[33%] md:min-w-[19.1%] flex flex-col rounded-sm ${
                 isCategory
                   ? "items-center p-[2%] hover:bg-gray-200"
-                  : "items-start bg-gray-100"
+                  : "items-start bg-gray-100 border border-gray-100 hover:border-gray-500"
               }`}
               key={index}
               href={`/product/${item.id}`}
