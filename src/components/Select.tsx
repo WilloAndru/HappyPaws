@@ -1,25 +1,40 @@
-type SelectProps = {
-  list: number[];
+import React, { useState } from "react";
+import ReactSelect, { SingleValue } from "react-select";
+
+export type OptionType = {
   value: number;
-  onChange: (v: number) => void;
+  label: string;
 };
 
-export function Select({ list, value, onChange }: SelectProps) {
+type SelectProps = {
+  options: OptionType[];
+  value?: OptionType;
+  onChange?: (option: OptionType) => void;
+};
+
+export function Select({ options, value, onChange }: SelectProps) {
+  const [selected, setSelected] = useState<OptionType | undefined>(value);
+
+  const handleChange = (option: SingleValue<OptionType>) => {
+    if (option) {
+      setSelected(option);
+      onChange?.(option);
+    }
+  };
+
   return (
-    <select
-      value={value}
-      onChange={(e) => onChange(Number(e.target.value))}
-      className="
-        border border-gray-300 rounded-md bg-white
-        text-sm p-2 pr-6
-        shadow-sm cursor-pointer
-        focus:outline-none focus:ring-2 focus:ring-blue-500"
-    >
-      {list.map((q) => (
-        <option key={q} value={q} className="text-gray-700 text-sm bg-white">
-          {q} units
-        </option>
-      ))}
-    </select>
+    <ReactSelect
+      value={selected}
+      onChange={handleChange}
+      options={options}
+      isSearchable={false} // No permite buscar opciones escribiendo
+      className="w-30"
+      //Hacemos la fuente mas pequeña
+      styles={{
+        control: (base) => ({ ...base, fontSize: "0.9rem" }),
+        singleValue: (base) => ({ ...base, fontSize: "0.9rem" }),
+        option: (base) => ({ ...base, fontSize: "0.9rem" }),
+      }}
+    />
   );
 }

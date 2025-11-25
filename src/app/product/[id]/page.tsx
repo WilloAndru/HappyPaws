@@ -6,16 +6,15 @@ import { useParams } from "next/navigation";
 import React, { useState } from "react";
 import { Heart } from "lucide-react";
 import Rating from "@/components/Rating";
-import { Select } from "@/components/Select";
+import { Select, OptionType } from "@/components/Select";
 
 export default function Product() {
   const { id } = useParams();
   const productId = Number(id);
   const [isFav, setIsFav] = useState(false);
   const { data, isLoading } = useProduct(productId);
-  const [qty, setQty] = useState(1);
 
-  // Opciones del select de catidad de stock a comprar
+  // Opciones del select del stock y su estado
   const options = [
     { value: 1, label: "1 unit" },
     { value: 2, label: "2 units" },
@@ -23,12 +22,14 @@ export default function Product() {
     { value: 4, label: "4 units" },
     { value: 5, label: "5 units" },
   ];
+  const [qty, setQty] = useState<OptionType>(options[0]);
 
-  if (isLoading) return <p>Loading...</p>;
-
+  // Funcion para añadir el producto a favoritos
   const handleAddFavorite = async () => {
     setIsFav((prev) => !prev);
   };
+
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <main className="flex flex-col md:flex-row gap-4 p-4 bg-gray-100 rounded-sm md:mx-[10vw]">
@@ -42,7 +43,7 @@ export default function Product() {
         />
       </section>
       {/* Seccion de detalles del producto */}
-      <section className="px-6 py-4 flex flex-col gap-3 rounded-sm bg-white md:w-3/2">
+      <section className="px-6 py-4 flex flex-col gap-3 rounded-sm bg-white md:w-1/2">
         {/* Nombre y boton de favoritos */}
         <header className="flex justify-between items-center">
           <h2>{data.name}</h2>
@@ -59,7 +60,7 @@ export default function Product() {
         <section>
           <p className="line-through text-gray-400">$ {data.price}</p>
           <div className="flex gap-4">
-            <h2>$ {data.price * (1 - data.discount)}</h2>
+            <h2>$ {(data.price * (1 - data.discount)).toFixed(2)}</h2>
             <h4 className="text-white px-2 py-1 rounded-xl bg-primary">
               {data.discount * 100}% OFF
             </h4>
@@ -71,11 +72,7 @@ export default function Product() {
         <section>
           <h6 className="mb-1">Stock</h6>
           <div className="flex items-center gap-3">
-            <Select
-              list={[1, 2, 3, 4, 5]}
-              value={qty}
-              onChange={(v) => setQty(v)}
-            />
+            <Select options={options} value={qty} onChange={setQty} />
             <p className="text-gray-500">{data.stock} units left</p>
           </div>
         </section>
