@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import {
   getTrendingProducts,
+  getProductsByCategory,
   getProductById,
   getSearchProducts,
 } from "@/lib/api/products";
@@ -12,7 +13,17 @@ export function useTrendingProducts() {
   });
 }
 
-export function useProduct(id: number | null) {
+export function useProductsByCategory(
+  category: string,
+  p0: { enabled: boolean }
+) {
+  return useQuery({
+    queryKey: ["products", category],
+    queryFn: () => getProductsByCategory(category),
+  });
+}
+
+export function useProduct(id: number) {
   return useQuery({
     queryKey: ["product", id],
     queryFn: () => getProductById(id as number),

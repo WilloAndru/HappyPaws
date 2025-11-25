@@ -5,6 +5,11 @@ export async function getTrendingProducts() {
   return res.data;
 }
 
+export async function getProductsByCategory(category: string) {
+  const res = await axios.get(`/api/products?category=${category}&limit=10`);
+  return res.data;
+}
+
 export async function getProducts() {
   const res = await axios.get("/api/products/");
   return res.data;

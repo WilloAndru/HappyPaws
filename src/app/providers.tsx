@@ -6,8 +6,8 @@ import { AuthProvider } from "@/context/AuthContext";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1 * 60 * 5, // 5 minutos sin considerarse "viejos"
-      gcTime: 10 * 60 * 30, // 30 minutos antes de ser eliminados de cache
+      staleTime: 1000 * 60 * 5, // 5 minutos sin considerarse "viejos"
+      gcTime: 1000 * 60 * 30, // 30 minutos antes de ser eliminados de cache
       refetchOnWindowFocus: false,
     },
   },
