@@ -12,9 +12,11 @@ import Slider from "@/components/Slider";
 import { useAuth } from "@/context/AuthContext";
 import { updateWishlist } from "@/lib/api/wishlist";
 import { useCartStore } from "@/store/cartStore";
+import AdviceAuth from "@/components/AdviceAuth";
 
 export default function Product() {
   const { user, setUser } = useAuth();
+  const [showAdviceAuth, setShowAdviceAuth] = useState(false);
 
   // Constantes inicales del producto y productos similares
   const { id } = useParams();
@@ -44,6 +46,11 @@ export default function Product() {
   // Funcion para añadir el producto a favoritos
   const toggleFavorite = async () => {
     try {
+      // Si no esta logeado salta aviso
+      if (!user) {
+        setShowAdviceAuth(true);
+        return;
+      }
       const status = await updateWishlist(user!.id, product.id);
       // Si estaba en favoritos → quitar
       if (status === 200) {
@@ -140,16 +147,20 @@ export default function Product() {
                   : "bg-blue-400 hover:bg-blue-500"
               }`}
               onClick={() => {
-                if (isOnCart) {
-                  removeToCart(productId);
+                if (!user) {
+                  setShowAdviceAuth(true);
                 } else {
-                  addToCart({
-                    id: productId,
-                    name: product.name,
-                    imageUrl: product.imageUrl,
-                    price: product.price,
-                    quantity: qty.value,
-                  });
+                  if (isOnCart) {
+                    removeToCart(productId);
+                  } else {
+                    addToCart({
+                      id: productId,
+                      name: product.name,
+                      imageUrl: product.imageUrl,
+                      price: product.price,
+                      quantity: qty.value,
+                    });
+                  }
                 }
               }}
             >
@@ -164,6 +175,8 @@ export default function Product() {
         <h2>Related products</h2>
         <Slider list={products} isCategory={false} />
       </section>
+      {/* Aviso de no estas logeado todavia */}
+      {showAdviceAuth && <AdviceAuth setShowAdviceAuth={setShowAdviceAuth} />}
     </main>
   );
 }

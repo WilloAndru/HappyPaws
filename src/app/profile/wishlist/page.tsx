@@ -33,8 +33,8 @@ export default function WishList() {
       ) : (
         // Seccion de lista de deseos
         <section className="flex flex-col gap-4">
-          {user?.wishlist.map((item) => {
-            return <Favorite key={item.id} productId={item.productId} />;
+          {user?.wishlist.map((item, index) => {
+            return <Favorite key={index} productId={item.productId} />;
           })}
         </section>
       )}
