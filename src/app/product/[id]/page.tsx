@@ -72,8 +72,11 @@ export default function Product() {
     }
   };
 
-  // Funciones para añadir y remover productos del carrito
+  // Funciones para añadir, remover y validar si el producto esta en el carro
   const { addToCart, removeToCart } = useCartStore();
+  const isOnCart = useCartStore((state) =>
+    state.items.some((i) => i.id === productId)
+  );
 
   if (isLoadingProduct || isLoadingCategory) return <p>Loading...</p>;
 
@@ -131,19 +134,27 @@ export default function Product() {
               Buy now
             </button>
             <button
-              className="flex items-center justify-center gap-3 rounded-xl bg-blue-400 text-white px-4 py-2 hover:bg-blue-500"
-              onClick={() =>
-                addToCart({
-                  id: productId,
-                  name: product.name,
-                  imageUrl: product.imageUrl,
-                  price: product.price,
-                  quantity: qty.value,
-                })
-              }
+              className={`flex items-center justify-center gap-3 rounded-xl text-white px-4 py-2  ${
+                isOnCart
+                  ? "bg-red-400 hover:bg-red-500"
+                  : "bg-blue-400 hover:bg-blue-500"
+              }`}
+              onClick={() => {
+                if (isOnCart) {
+                  removeToCart(productId);
+                } else {
+                  addToCart({
+                    id: productId,
+                    name: product.name,
+                    imageUrl: product.imageUrl,
+                    price: product.price,
+                    quantity: qty.value,
+                  });
+                }
+              }}
             >
               <FaCartArrowDown />
-              Add to cart
+              {isOnCart ? "Remove to cart" : "Add to cart"}
             </button>
           </section>
         </section>

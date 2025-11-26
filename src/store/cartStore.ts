@@ -11,7 +11,6 @@ type CartItem = {
 
 type CartStore = {
   items: CartItem[];
-  isOnCart: (id: number) => void;
   addToCart: (item: CartItem) => void;
   removeToCart: (id: number) => void;
   updateQty: (id: number, qty: number) => void;
@@ -24,9 +23,6 @@ export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
       items: [],
-
-      // Funcion para ver si el item ya esta en el carrito
-      isOnCart: (id) => get().items.some((i) => i.id === id),
 
       // Funcion para agregar item al carro
       addToCart: (item) =>
