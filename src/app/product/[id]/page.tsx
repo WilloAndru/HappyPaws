@@ -3,7 +3,7 @@
 import { useProduct, useProductsByCategory } from "@/app/hooks/useProducts";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Heart } from "lucide-react";
 import Rating from "@/components/Rating";
 import { Select, OptionType } from "@/components/Select";
@@ -11,28 +11,27 @@ import { FaCartArrowDown } from "react-icons/fa";
 import Slider from "@/components/Slider";
 import { useAuth } from "@/context/AuthContext";
 import { updateWishlist } from "@/lib/api/wishlist";
+import { useCartStore } from "@/store/cartStore";
 
 export default function Product() {
   const { user, setUser } = useAuth();
+
+  // Constantes inicales del producto y productos similares
   const { id } = useParams();
   const productId = Number(id);
-  const [isFav, setIsFav] = useState(false);
-  // Datos del producto
   const { data: product, isLoading: isLoadingProduct } = useProduct(productId);
-  // Datos de los productos similares, (esperamos sincronia)
   const { data: products, isLoading: isLoadingCategory } =
     useProductsByCategory(product?.category || "", {
       enabled: !!product,
     });
-  // Actualiza isFav cuando user o product cambien
-  useEffect(() => {
-    if (!user || !product) return;
 
-    const fav = user.wishlist.some((item) => item.productId === product.id);
-    setIsFav(fav);
-  }, [user, product]);
+  // El producto ya esta en la lista de deseos?
+  const isFav =
+    !!user &&
+    !!product &&
+    user.wishlist.some((item) => item.productId === product.id);
 
-  // Opciones del select del stock y su estado
+  // Logica de cantidad de productos a comprar
   const options = [
     { value: 1, label: "1 unit" },
     { value: 2, label: "2 units" },
@@ -45,11 +44,9 @@ export default function Product() {
   // Funcion para añadir el producto a favoritos
   const toggleFavorite = async () => {
     try {
-      // Actualizamos el estado local primero para feedback inmediato
-      setIsFav((prev) => !prev);
-      await updateWishlist(user!.id, productId);
+      const status = await updateWishlist(user!.id, product.id);
       // Si estaba en favoritos → quitar
-      if (isFav) {
+      if (status === 200) {
         setUser((prev) => {
           if (!prev) return prev;
           return {
@@ -74,6 +71,9 @@ export default function Product() {
       console.error("Error", error);
     }
   };
+
+  // Funciones para añadir y remover productos del carrito
+  const { addToCart, removeToCart } = useCartStore();
 
   if (isLoadingProduct || isLoadingCategory) return <p>Loading...</p>;
 
@@ -119,6 +119,7 @@ export default function Product() {
           {/* Stocks */}
           <section>
             <h6 className="mb-1">Stock</h6>
+            {/* Cantidad de unidades a comprar */}
             <div className="flex items-center gap-3">
               <Select options={options} value={qty} onChange={setQty} />
               <p className="text-gray-500">{product.stock} units left</p>
@@ -129,7 +130,18 @@ export default function Product() {
             <button className="rounded-xl bg-primary text-white px-4 py-2 hover:bg-primary-hover">
               Buy now
             </button>
-            <button className="flex items-center justify-center gap-3 rounded-xl bg-blue-400 text-white px-4 py-2 hover:bg-blue-500">
+            <button
+              className="flex items-center justify-center gap-3 rounded-xl bg-blue-400 text-white px-4 py-2 hover:bg-blue-500"
+              onClick={() =>
+                addToCart({
+                  id: productId,
+                  name: product.name,
+                  imageUrl: product.imageUrl,
+                  price: product.price,
+                  quantity: qty.value,
+                })
+              }
+            >
               <FaCartArrowDown />
               Add to cart
             </button>

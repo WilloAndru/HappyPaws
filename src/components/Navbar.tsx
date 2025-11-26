@@ -122,7 +122,7 @@ export default function Navbar() {
         </div>
         {/* Boton de carrito */}
         <Link
-          href="/"
+          href="/cart"
           className="flex items-center gap-2 rounded-xl hover:bg-primary-hover px-3 py-2"
         >
           <FaShoppingCart className="text-3xl" />
