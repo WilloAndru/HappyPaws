@@ -157,7 +157,9 @@ export default function Product() {
                       id: productId,
                       name: product.name,
                       imageUrl: product.imageUrl,
-                      price: product.price,
+                      price: Number(
+                        (product.price * (1 - product.discount)).toFixed(2)
+                      ),
                       quantity: qty.value,
                     });
                   }

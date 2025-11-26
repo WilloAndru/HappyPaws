@@ -5,9 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { FaShoppingCart } from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
 
 export default function Cart() {
-  const { items, removeToCart, updateQty, total } = useCartStore();
+  const { items, removeToCart, total, clear } = useCartStore();
 
   // Interfaz de carrito vacio
   if (items.length === 0) {
@@ -28,28 +29,25 @@ export default function Cart() {
   }
 
   return (
-    <main className="flex flex-col gap-4 bg-gray-200 rounded-2xl mx-[10vw] justify-center text-start px-10 py-5">
+    <main className="flex flex-col gap-4 bg-gray-200 rounded-2xl md:mx-[20vw] justify-center px-8 py-5">
       <h2>Shopping cart</h2>
       {/* Lista de productos en el carro */}
       {items.map((i) => (
-        <section
-          key={i.id}
-          className="flex items-center justify-between w-full py-2"
-        >
+        <section key={i.id} className="flex justify-between py-2">
           {/* Div izquierdo */}
           <div className="flex gap-6 items-center">
             {/* Imagen */}
             <Image
-              className="rounded-xl object-cover"
-              src={i.imageUrl}
-              width={150}
-              height={150}
               alt={i.name}
+              className="rounded-xl object-cover w-[80px] md:w-[120px]"
+              src={i.imageUrl}
+              width={120}
+              height={120}
             />
             {/* Informacion del producto */}
-            <div className="flex flex-col">
+            <div className="flex flex-col text-[1.2rem]">
               {/* Nombre producto */}
-              <h6 className="font-medium text-gray-800">{i.name}</h6>
+              <h5>{i.name}</h5>
               {/* Cantidad y precio */}
               <p>
                 {i.quantity} {i.quantity === 1 ? "unit" : "units"} × ${i.price}
@@ -59,14 +57,29 @@ export default function Cart() {
           {/* Div derecho */}
           <button
             onClick={() => removeToCart(i.id)}
-            className="text-gray-400 hover:text-red-500 transition font-semibold text-lg"
-            aria-label="Remove item"
+            className="bg-red-500 hover:bg-red-400 px-4 self-stretch rounded-xl text-white text-3xl flex items-center justify-center"
           >
-            ×
+            <MdDeleteForever />
           </button>
         </section>
       ))}
-      <h3>Total: ${total()}</h3>
+      {/* Total a pagar */}
+      <h5 className="text-center">Total to pay: ${total().toFixed(2)}</h5>
+      {/* Boton de pagar y vaciar carrito */}
+      <section className="flex gap-4">
+        <button
+          className="rounded-xl px-4 py-2 bg-red-500 hover:bg-red-400 text-white w-1/2"
+          onClick={clear}
+        >
+          Clear cart
+        </button>
+        <Link
+          href="/checkout"
+          className="rounded-xl px-4 py-2 bg-primary hover:bg-primary-hover text-center text-white font-bold w-1/2"
+        >
+          Go to pay
+        </Link>
+      </section>
     </main>
   );
 }
