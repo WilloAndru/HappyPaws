@@ -28,7 +28,7 @@ export function Select({ options, value, onChange }: SelectProps) {
       onChange={handleChange}
       options={options}
       isSearchable={false} // No permite buscar opciones escribiendo
-      className="w-30"
+      className="w-auto"
       //Hacemos la fuente mas pequeña
       styles={{
         control: (base) => ({ ...base, fontSize: "0.9rem" }),
