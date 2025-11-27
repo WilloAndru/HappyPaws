@@ -31,10 +31,15 @@ export function useProduct(id: number) {
   });
 }
 
-export function useSearchProducts(query: string, limit: number) {
+export function useSearchProducts(
+  query: string,
+  animalType: string | null,
+  category: string | null,
+  limit: number
+) {
   return useQuery({
-    queryKey: ["search", query, limit],
-    queryFn: () => getSearchProducts(query, limit),
+    queryKey: ["search", query, animalType, category, limit],
+    queryFn: () => getSearchProducts(query, animalType, category, limit),
     enabled: query.trim().length > 0,
   });
 }

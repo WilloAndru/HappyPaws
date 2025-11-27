@@ -1,19 +1,21 @@
 "use client";
 import { Select } from "@/components/Select";
 import axios from "axios";
-import { useParams, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useSearchProducts } from "../hooks/useProducts";
 
 export default function Filters() {
-  const { query } = useParams() as { query: string }; //String a buscar
   const searchParams = useSearchParams();
-  const [animalType, setAnimalType] = useState<string>(
-    String(searchParams.get("animalType"))
+  const search = searchParams.get("search") || ""; //String a buscar
+  const [animalType, setAnimalType] = useState<string | null>(
+    searchParams.get("animalType")
   ); //Tipo de animal a filtrar
-  const [category, setCategory] = useState<string>(
-    String(searchParams.get("category"))
-  ); //Cateogria a filtrar
+  const [category, setCategory] = useState<string | null>(
+    searchParams.get("category")
+  ); //Categoria a filtrar
 
+  // Listas de elementos de los selects
   const [animalTypes, setAnimalTypes] = useState([]);
   const [categories, setCategories] = useState([]);
   const optionsPrice = [
@@ -21,8 +23,11 @@ export default function Filters() {
     { value: 1, label: "Highest price first" },
   ];
 
+  // Obtenemos todos los productos indicados
+  const { data } = useSearchProducts(search, animalType, category, 50);
+
+  // Obtenemos los datos de las categorias para los filtros
   useEffect(() => {
-    // Obtenemos los datos de las categorias para los filtros
     const getCategoriesForFilters = async () => {
       // Funcion para capitalizar los label
       const capitalize = (text: string) =>
@@ -79,7 +84,25 @@ export default function Filters() {
         </div>
       </section>
       {/* Seccion de paginacion */}
-      <section className="bg-gray-200 rounded-xl px-4 py-2 flex flex-col gap-2"></section>
+      <section className="bg-gray-200 rounded-xl px-5 py-3 flex flex-col gap-2 md:w-2/3">
+        {/* Header paginacion */}
+        <header className="flex justify-between">
+          {/* Titulo de que se esta buscando por caracteres */}
+          {search !== "" && (
+            <h2>{search[0].toUpperCase() + search.slice(1)}</h2>
+          )}
+          {/* Indicadores de que se esta filtrando */}
+          <div className="flex gap-3">
+            {animalType && (
+              <h6 className="px-3 py-2 bg-gray-100 rounded-xl">{animalType}</h6>
+            )}
+            {category && (
+              <h6 className="px-3 py-2 bg-gray-100 rounded-xl">{category}</h6>
+            )}
+          </div>
+        </header>
+        {/* Lista de productos */}
+      </section>
     </main>
   );
 }

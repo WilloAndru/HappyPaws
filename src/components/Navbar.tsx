@@ -23,7 +23,7 @@ export default function Navbar() {
   // Variables de la barra de busqueda
   const [searchText, setSearchText] = useState(""); // Texto a buscar
   const [debounced, setDebounced] = useState(searchText); // Retraso
-  const { data } = useSearchProducts(debounced, 5); // Lista de las 5 recomendaciones obtenidas
+  const { data } = useSearchProducts(debounced, null, null, 5); // Lista de las 5 recomendaciones obtenidas
 
   // Funcion que maneja el retraso de 300ms para mandar la solicitud de productos recomendados
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function Navbar() {
     e.preventDefault();
     const text = searchText.trim(); // Aseguramos que sea un string con espacios en las esquinas
     if (text !== "") {
-      router.push(`/filters/${encodeURIComponent(text)}`);
+      router.push(`/filters?search=${encodeURIComponent(text)}`);
       setSearchText("");
     }
   };

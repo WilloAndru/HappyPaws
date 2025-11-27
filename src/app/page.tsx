@@ -134,7 +134,7 @@ export default function Home() {
             return (
               <Link
                 key={index}
-                href={`/${name}`}
+                href={`/filters?category=${name}`}
                 className="flex flex-col gap-2 items-center border-2 border-white hover:border-gray-400 rounded-3xl p-4"
               >
                 <img src={`/categories/${item}`} alt={name} />

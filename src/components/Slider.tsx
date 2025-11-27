@@ -39,7 +39,11 @@ export default function Slider({ list, isCategory }: SliderProps) {
                   : "items-start bg-gray-100 border border-gray-100 hover:border-gray-500"
               }`}
               key={index}
-              href={`/product/${item.id}`}
+              href={
+                isCategory
+                  ? `/filters?animalType=${name}`
+                  : `/product/${item.id}`
+              }
             >
               <img
                 src={isCategory ? `/pets/${item}` : item.imageUrl}
