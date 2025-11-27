@@ -6,6 +6,7 @@ export async function GET(req: Request) {
   try {
     const url = new URL(req.url);
     const q = (url.searchParams.get("q") || "").trim(); // Extraemos la palabra a buscar
+    const limit = (url.searchParams.get("limit") || "").trim(); // Extraemos el limite de objetos a devolver
 
     //Si el usuario no escribio nada
     if (!q) {
@@ -20,7 +21,7 @@ export async function GET(req: Request) {
         id: true,
         name: true,
       },
-      take: 8, // Devolvemos los 8 primeros
+      take: Number(limit), // Devolvemos los 8 primeros
     });
 
     return NextResponse.json({ results });

@@ -33,7 +33,11 @@ export default function Cart() {
       <h2>Shopping cart</h2>
       {/* Lista de productos en el carro */}
       {items.map((i) => (
-        <section key={i.id} className="flex justify-between py-2">
+        <Link
+          href={`/product/${i.id}`}
+          key={i.id}
+          className="hover:bg-gray-100 px-2 rounded-xl flex justify-between py-2"
+        >
           {/* Div izquierdo */}
           <div className="flex gap-6 items-center">
             {/* Imagen */}
@@ -54,14 +58,14 @@ export default function Cart() {
               </p>
             </div>
           </div>
-          {/* Div derecho */}
+          {/* Boton de remover */}
           <button
             onClick={() => removeToCart(i.id)}
             className="bg-red-500 hover:bg-red-400 px-4 self-stretch rounded-xl text-white text-3xl flex items-center justify-center"
           >
             <MdDeleteForever />
           </button>
-        </section>
+        </Link>
       ))}
       {/* Total a pagar */}
       <h5 className="text-center">Total to pay: ${total().toFixed(2)}</h5>

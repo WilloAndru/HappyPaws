@@ -20,7 +20,7 @@ export async function getProductById(id: number) {
   return res.data;
 }
 
-export async function getSearchProducts(query: string) {
-  const res = await axios.get(`/api/search?q=${query}`);
+export async function getSearchProducts(query: string, limit: number) {
+  const res = await axios.get(`/api/search?q=${query}&limit=${limit}`);
   return res.data;
 }

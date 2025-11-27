@@ -4,6 +4,7 @@ import Link from "next/link";
 import React from "react";
 import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
+import { MdDeleteForever } from "react-icons/md";
 
 type FavoriteProps = {
   productId: number;
@@ -13,6 +14,7 @@ export default function Favorite({ productId }: FavoriteProps) {
   const { user, setUser } = useAuth();
   const { data: product, isLoading } = useProduct(productId);
 
+  // Funcion para eliminar o añadir producto de fav
   const handleProduct = async () => {
     try {
       const res = await axios.post("/api/wishlist/", {
@@ -63,12 +65,12 @@ export default function Favorite({ productId }: FavoriteProps) {
         />
         <h6 className="text-center">${product.price}</h6>
       </div>
-
+      {/* Boton para remover */}
       <button
-        className="bg-red-500 rounded-2xl p-4 text-white hover:bg-red-400 h-full"
         onClick={handleProduct}
+        className="bg-red-500 hover:bg-red-400 px-4 self-stretch rounded-xl text-white text-3xl flex items-center justify-center"
       >
-        Remove
+        <MdDeleteForever />
       </button>
     </Link>
   );

@@ -1,3 +1,5 @@
+"use client";
+
 import {
   FaComment,
   FaUserCircle,
@@ -11,21 +13,33 @@ import { useAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
 import { optionsUser } from "@/data/optionsUser";
 import { useSearchProducts } from "@/app/hooks/useProducts";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
+  const router = useRouter();
   const [showOptionsProfile, setShowOptionsProfile] = useState(false);
 
   // Variables de la barra de busqueda
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState(""); // Texto a buscar
   const [debounced, setDebounced] = useState(searchText); // Retraso
-  const { data } = useSearchProducts(debounced); // Lista de las 8 recomendaciones obtenidas
+  const { data } = useSearchProducts(debounced, 5); // Lista de las 5 recomendaciones obtenidas
 
   // Funcion que maneja el retraso de 300ms para mandar la solicitud de productos recomendados
   useEffect(() => {
     const handler = setTimeout(() => setDebounced(searchText), 300);
     return () => clearTimeout(handler);
   }, [searchText]);
+
+  // Funcion que se ejecuta al buscar
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const text = searchText.trim(); // Aseguramos que sea un string con espacios en las esquinas
+    if (text !== "") {
+      router.push(`/filters/${encodeURIComponent(text)}`);
+      setSearchText("");
+    }
+  };
 
   return (
     <header className="z-1 top-0 left-0 text-white fixed flex flex-col gap-2 py-2 px-2 md:px-8 md:py-4 bg-primary w-full md:flex-row md:items-center md:justify-between">
@@ -36,7 +50,11 @@ export default function Navbar() {
       </Link>
 
       {/* Barra de búsqueda */}
-      <form className="relative flex order-2 md:order-none md:flex-1 md:mx-6 pl-2 rounded-lg border-0 bg-white shadow-sm md:max-w-[40vw]">
+      <form
+        onSubmit={handleSearch}
+        className="relative flex order-2 md:order-none md:flex-1 md:mx-6 pl-2 rounded-lg border-0 bg-white shadow-sm md:max-w-[40vw]"
+      >
+        {/* Barra de busqueda */}
         <input
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
@@ -47,12 +65,13 @@ export default function Navbar() {
         <button className="text-primary text-[1.2rem] px-4 py-2">
           <FaSearch />
         </button>
-
+        {/* Resultados recomendados */}
         {data?.results?.length > 0 && (
           <div className="absolute left-0 top-full mt-0.5 w-full bg-white shadow-lg rounded-lg flex flex-col text-black">
             {data.results.map((p: any) => (
               <Link
-                href={`/product/${p.slug}`} // o como tengas la ruta
+                onClick={() => setSearchText("")}
+                href={`/product/${p.id}`}
                 className="px-4 py-3 rounded-lg hover:bg-gray-100"
                 key={p.id}
               >

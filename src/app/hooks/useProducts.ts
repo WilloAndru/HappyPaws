@@ -31,10 +31,10 @@ export function useProduct(id: number) {
   });
 }
 
-export function useSearchProducts(query: string) {
+export function useSearchProducts(query: string, limit: number) {
   return useQuery({
-    queryKey: ["search", query],
-    queryFn: () => getSearchProducts(query),
+    queryKey: ["search", query, limit],
+    queryFn: () => getSearchProducts(query, limit),
     enabled: query.trim().length > 0,
   });
 }

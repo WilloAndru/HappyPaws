@@ -9,6 +9,7 @@ export async function GET(req: Request) {
 
     const sort = searchParams.get("sort");
     const category = searchParams.get("category");
+
     // Pasamos el string de category a uno de los enums reales
     const categoryEnum = category
       ? Category[category as keyof typeof Category]
