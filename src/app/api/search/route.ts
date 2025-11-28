@@ -17,10 +17,6 @@ export async function GET(req: Request) {
       where: {
         name: { contains: q, mode: "insensitive" },
       },
-      select: {
-        id: true,
-        name: true,
-      },
       take: Number(limit), // Devolvemos los 8 primeros
     });
 

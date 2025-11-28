@@ -33,7 +33,7 @@ export type DBOrder = {
 };
 
 export type DBWhishItem = {
-  id: number;
+  id?: number;
   userId: string;
   productId: number;
 };

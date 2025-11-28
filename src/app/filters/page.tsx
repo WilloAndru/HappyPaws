@@ -4,6 +4,8 @@ import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSearchProducts } from "../hooks/useProducts";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Filters() {
   const searchParams = useSearchParams();
@@ -25,6 +27,7 @@ export default function Filters() {
 
   // Obtenemos todos los productos indicados
   const { data } = useSearchProducts(search, animalType, category, 50);
+  console.log(data);
 
   // Obtenemos los datos de las categorias para los filtros
   useEffect(() => {
@@ -57,7 +60,7 @@ export default function Filters() {
   return (
     <main className="flex gap-4 flex-col md:flex-row">
       {/* Seccion de filtros */}
-      <section className="bg-gray-200 rounded-xl px-5 py-3 md:w-1/3 flex flex-col gap-4">
+      <section className="sticky top-25 bg-gray-200 rounded-xl px-5 py-3 md:w-1/3 flex flex-col gap-4 h-fit">
         {/* Filtro por precio */}
         <div className="flex gap-2 flex-col">
           <h5>Price</h5>
@@ -102,6 +105,36 @@ export default function Filters() {
           </div>
         </header>
         {/* Lista de productos */}
+        {data?.results.map((item: any) => (
+          <Link
+            href={`/product/${item.id}`}
+            key={item.id}
+            className="rounded-xl flex gap-4 p-4 bg-white hover:bg-gray-50"
+          >
+            {/* Imagen producto */}
+            <Image
+              src={item.imageUrl}
+              width={120}
+              height={120}
+              alt={item.name}
+              className="rounded-xl object-contain"
+            />
+            <div className="flex flex-col gap-1 justify-center">
+              {/* Nombre */}
+              <h5>{item.name}</h5>
+              {/* Precio */}
+              <div className="flex flex-col">
+                <p className="line-through text-gray-400">$ {item.price}</p>
+                <div className="flex gap-4">
+                  <h5>$ {(item.price * (1 - item.discount)).toFixed(2)}</h5>
+                  <h6 className="text-white px-2 py-1 rounded-xl bg-primary">
+                    {item.discount * 100}% OFF
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </Link>
+        ))}
       </section>
     </main>
   );
