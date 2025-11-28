@@ -68,19 +68,38 @@ export default function Filters() {
     50
   );
   const [filteredData, setFilteredData] = useState(data?.results || []);
+  // Actualizamos la lista de productos cada vez que cambia un estado de filtrado
   useEffect(() => {
-    setFilteredData(data?.results || []);
-  }, [data]);
-
-  // Aplicar filtros
-  const handleFilter = () => {};
-
+    let result = data?.results || [];
+    // Filtro por tipo animal
+    if (animalType) {
+      result = result.filter((i: any) => i.animalType === animalType.label);
+    }
+    // Filtro por categoría
+    if (category) {
+      result = result.filter((i: any) => i.category === category.label);
+    }
+    // Ordenar por precio
+    if (orderPrice) {
+      result = [...result].sort((a: any, b: any) => {
+        if (orderPrice.value === 0) return a.price - b.price;
+        if (orderPrice.value === 1) return b.price - a.price;
+        return 0;
+      });
+    }
+    setFilteredData(result);
+  }, [data, animalType, category, orderPrice]);
   // Limpiar filtros
   const handleClearFilter = () => {
     setAnimalType(null);
     setCategory(null);
     setOrderPrice(null);
   };
+
+  // Logica paginacion
+  const [page, setPage] = useState(1);
+  const pageSize = 10; // items por página
+  const totalPages = Math.ceil(filteredData.length / pageSize);
 
   return (
     <main className="flex gap-4 flex-col md:flex-row">
@@ -89,33 +108,39 @@ export default function Filters() {
         {/* Filtro por precio */}
         <div className="flex gap-2 flex-col">
           <h5>Price</h5>
-          <Select options={optionsPrice} onChange={setOrderPrice} />
+          <Select
+            options={optionsPrice}
+            value={orderPrice}
+            onChange={setOrderPrice}
+          />
         </div>
         {/* Filtro por tipo de animal */}
         <div className="flex gap-2 flex-col">
           <h5>Animal type</h5>
-          <Select options={animalTypes} onChange={setAnimalType} />
+          <Select
+            options={animalTypes}
+            value={animalType}
+            onChange={setAnimalType}
+          />
         </div>
         {/* Filtro por categoria */}
         <div className="flex gap-2 flex-col">
           <h5>Category</h5>
-          <Select options={categories} onChange={setCategory} />
+          <Select
+            options={categories}
+            value={category}
+            onChange={setCategory}
+          />
         </div>
         {/* Botones de filtrar y limpiar filtro */}
-        <div className="flex gap-2 mb-2">
-          <button
-            onClick={handleFilter}
-            className="rounded-xl text-white px-4 py-2 bg-primary hover:bg-primary-hover w-1/2"
-          >
-            Apply filters
-          </button>
+        {(category || orderPrice || animalType) && (
           <button
             onClick={handleClearFilter}
-            className="rounded-xl text-white px-4 py-2 bg-blue-400 hover:bg-blue-500 w-1/2"
+            className="rounded-xl text-white px-4 py-2 bg-blue-400 hover:bg-blue-500"
           >
             Clear filters
           </button>
-        </div>
+        )}
       </section>
       {/* Seccion de paginacion */}
       <section className="bg-gray-200 rounded-xl px-5 py-3 flex flex-col gap-3 md:w-2/3">
@@ -170,6 +195,47 @@ export default function Filters() {
             </div>
           </Link>
         ))}
+        {/* Anuncio de no se han encontrado productos */}
+        {filteredData.length === 0 && (
+          <h5 className="text-center">
+            No products were found matching these specifications
+          </h5>
+        )}
+        {/* Seccion de botones de paginacion */}
+        {filteredData.length >= pageSize && (
+          <div className="flex gap-2 justify-center mt-8">
+            {/* Prev */}
+            <button
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page === 1}
+              className="px-3 py-1 rounded border disabled:opacity-40"
+            >
+              Prev
+            </button>
+            {/* Numeros de página */}
+            {Array.from({ length: totalPages }).map((_, index) => {
+              const pageNumber = index + 1;
+              return (
+                <button
+                  key={pageNumber}
+                  onClick={() => setPage(pageNumber)}
+                  className={`px-3 py-1 rounded border 
+            ${page === pageNumber ? "bg-primary text-white" : "bg-white"}`}
+                >
+                  {pageNumber}
+                </button>
+              );
+            })}
+            {/* Next */}
+            <button
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              disabled={page === totalPages}
+              className="px-3 py-1 rounded border disabled:opacity-40"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </section>
     </main>
   );
