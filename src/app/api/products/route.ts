@@ -1,27 +1,46 @@
-import { Category } from "@/generated/prisma";
+import { Category, AnimalType } from "@/generated/prisma";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-// Funcion para obtener conjunto de productos por filtrado o no
+// Función para obtener productos con filtros opcionales
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
 
-    const sort = searchParams.get("sort");
-    const category = searchParams.get("category");
+    const q = searchParams.get("q");
+    const animalTypeParam = searchParams.get("animalType");
+    const categoryParam = searchParams.get("category");
+    const limit = Number(searchParams.get("limit")) || 50;
 
-    // Pasamos el string de category a uno de los enums reales
-    const categoryEnum = category
-      ? Category[category as keyof typeof Category]
+    // Enums reales solo si existen
+    const categoryEnum = categoryParam
+      ? Category[categoryParam as keyof typeof Category]
       : undefined;
-    const limit = Number(searchParams.get("limit")) || undefined;
+
+    const animalTypeEnum = animalTypeParam
+      ? AnimalType[animalTypeParam as keyof typeof AnimalType]
+      : undefined;
+
+    // Construir filtro dinámico sin basura
+    const where: any = {};
+
+    if (q) {
+      where.name = {
+        contains: q,
+        mode: "insensitive",
+      };
+    }
+
+    if (categoryEnum) where.category = categoryEnum;
+    if (animalTypeEnum) where.animalType = animalTypeEnum;
 
     const products = await prisma.product.findMany({
-      // Si category esta definido, devuelve los productos por categoria, sino devulve todo
-      where: category ? { category: categoryEnum } : undefined,
-      // Si sort esta definido, devuelve los productos ordenados, sino devulve todo
-      orderBy: sort ? { [sort]: "desc" } : undefined,
-      // Devuelve solo el limite de productos
+      where: Object.keys(where).length ? where : undefined,
+
+      orderBy: {
+        createdAt: "desc", // orden fijo seguro
+      },
+
       take: limit,
     });
 

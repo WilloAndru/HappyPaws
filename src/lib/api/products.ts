@@ -21,13 +21,18 @@ export async function getProductById(id: number) {
 }
 
 export async function getSearchProducts(
-  query: string,
-  animalType: string | null,
-  category: string | null,
-  limit: number
+  query?: string | null,
+  animalType?: string | null,
+  category?: string | null,
+  limit?: number
 ) {
-  const res = await axios.get(
-    `/api/search?q=${query}&animalType=${animalType}&category=${category}&limit=${limit}`
-  );
+  const params = new URLSearchParams();
+
+  if (query) params.append("q", query);
+  if (animalType) params.append("animalType", animalType);
+  if (category) params.append("category", category);
+  if (limit) params.append("limit", String(limit));
+
+  const res = await axios.get(`/api/products?${params.toString()}`);
   return res.data;
 }

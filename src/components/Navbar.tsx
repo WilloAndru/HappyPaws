@@ -66,9 +66,9 @@ export default function Navbar() {
           <FaSearch />
         </button>
         {/* Resultados recomendados */}
-        {data?.results?.length > 0 && (
+        {data?.length > 0 && (
           <div className="absolute left-0 top-full mt-0.5 w-full bg-white shadow-lg rounded-lg flex flex-col text-black">
-            {data.results.map((p: any) => (
+            {data?.map((p: any) => (
               <Link
                 onClick={() => setSearchText("")}
                 href={`/product/${p.id}`}

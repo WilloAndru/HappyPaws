@@ -35,11 +35,16 @@ export default function Filters() {
           }))
         );
         // Guardamos el tipo de animal actual a filtrar
-        setAnimalType(
+        const label1 =
           res.data.animalTypes.find(
-            (a: any) => a.label === searchParams.get("animalType")
-          )
-        );
+            (a: string) => a === searchParams.get("animalType")?.toUpperCase()
+          ) ?? null;
+        label1
+          ? setAnimalType({
+              value: 0,
+              label: label1,
+            })
+          : null;
         // Guardamos todas las categorias
         setCategories(
           res.data.categories.map((item: string, index: number) => ({
@@ -48,11 +53,16 @@ export default function Filters() {
           }))
         );
         // Guardamos la categoria actual a filtrar
-        setCategory(
+        const label2 =
           res.data.categories.find(
-            (a: any) => a.label === searchParams.get("category")
-          )
-        );
+            (a: string) => a === searchParams.get("category")?.toUpperCase()
+          ) ?? null;
+        label2
+          ? setCategory({
+              value: 0,
+              label: label2,
+            })
+          : null;
       } catch (error) {
         console.error("Error", error);
       }
@@ -67,21 +77,21 @@ export default function Filters() {
     searchParams.get("category"),
     50
   );
-  const [filteredData, setFilteredData] = useState(data?.results || []);
+
+  const [filteredData, setFilteredData] = useState<any>([]);
   // Actualizamos la lista de productos cada vez que cambia un estado de filtrado
   useEffect(() => {
-    let result = data?.results || [];
-    // Filtro por tipo animal
-    if (animalType) {
-      result = result.filter((i: any) => i.animalType === animalType.label);
+    if (!data) return;
+
+    let result = [...data];
+    if (animalType?.label) {
+      result = result.filter((i) => i.animalType === animalType.label);
     }
-    // Filtro por categoría
-    if (category) {
-      result = result.filter((i: any) => i.category === category.label);
+    if (category?.label) {
+      result = result.filter((i) => i.category === category.label);
     }
-    // Ordenar por precio
     if (orderPrice) {
-      result = [...result].sort((a: any, b: any) => {
+      result = [...result].sort((a, b) => {
         if (orderPrice.value === 0) return a.price - b.price;
         if (orderPrice.value === 1) return b.price - a.price;
         return 0;
@@ -100,6 +110,8 @@ export default function Filters() {
   const [page, setPage] = useState(1);
   const pageSize = 10; // items por página
   const totalPages = Math.ceil(filteredData.length / pageSize);
+
+  // console.log(data, filteredData);
 
   return (
     <main className="flex gap-4 flex-col md:flex-row">
@@ -169,7 +181,7 @@ export default function Filters() {
           <Link
             href={`/product/${item.id}`}
             key={item.id}
-            className="rounded-xl flex gap-4 p-4 bg-white hover:bg-gray-50"
+            className="rounded-xl flex gap-4 p-4 bg-white hover:bg-gray-100"
           >
             {/* Imagen producto */}
             <Image
@@ -196,7 +208,7 @@ export default function Filters() {
           </Link>
         ))}
         {/* Anuncio de no se han encontrado productos */}
-        {filteredData.length === 0 && (
+        {!filteredData.length && (
           <h5 className="text-center">
             No products were found matching these specifications
           </h5>

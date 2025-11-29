@@ -20,7 +20,7 @@ export default function Cart() {
         </div>
         <Link
           className="text-white rounded-xl px-4 py-2 font-bold bg-primary hover:bg-primary-hover"
-          href="/products"
+          href="/filters"
         >
           Go to add products
         </Link>
