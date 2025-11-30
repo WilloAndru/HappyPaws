@@ -5,15 +5,15 @@ import { useAuth } from "@/context/AuthContext";
 import { useCartStore } from "@/store/cartStore";
 import React, { useEffect, useState } from "react";
 import { FaStripe } from "react-icons/fa";
+import axios from "axios";
 
 export default function Checkout() {
   const { user } = useAuth();
   const { state, items, buyNowItem } = useCartStore();
   const purchaseItems = state === "buyNow" ? [buyNowItem] : items;
-  const totalCart = purchaseItems.reduce(
-    (sum, item) => sum + item!.price * item!.quantity,
-    0
-  );
+  const totalCart = purchaseItems
+    .reduce((sum, item) => sum + item!.price * item!.quantity, 0)
+    .toFixed(2);
 
   // Logica para manejar que datos de domicilio se muestran
   const addressOptions =
@@ -28,11 +28,23 @@ export default function Checkout() {
     }
   }, [addressOptions]);
 
-  // Funcion de ir a pagar a stripe
+  // Funcion para pagar en stripe
   async function handleCheckout() {
     try {
-    } catch (err) {
-      console.error(err);
+      const response = await axios.post("/api/stripe", {
+        items: purchaseItems,
+        mode: "buy",
+      });
+
+      const { url } = response.data;
+
+      if (!url) {
+        throw new Error("Stripe did not return a checkout URL");
+      }
+
+      window.location.href = url;
+    } catch (err: any) {
+      console.error("Stripe error:", err?.response?.data || err.message);
       alert("Payment failed. Please try again.");
     }
   }
@@ -54,7 +66,7 @@ export default function Checkout() {
               <p>
                 {item!.quantity} {item!.quantity === 1 ? "unit" : "units"}
               </p>
-              <h6>${item!.price * item!.quantity}</h6>
+              <h6>${(item!.price * item!.quantity).toFixed(2)}</h6>
             </div>
           </section>
         ))}
