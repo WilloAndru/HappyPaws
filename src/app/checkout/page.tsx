@@ -1,9 +1,13 @@
 "use client";
 
+import { Select } from "@/components/Select";
+import { useAuth } from "@/context/AuthContext";
 import { useCartStore } from "@/store/cartStore";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { FaStripe } from "react-icons/fa";
 
 export default function Checkout() {
+  const { user } = useAuth();
   const { state, items, buyNowItem } = useCartStore();
   const purchaseItems = state === "buyNow" ? [buyNowItem] : items;
   const totalCart = purchaseItems.reduce(
@@ -11,10 +15,32 @@ export default function Checkout() {
     0
   );
 
+  // Logica para manejar que datos de domicilio se muestran
+  const addressOptions =
+    user?.addresses.map((a, i) => ({
+      value: i,
+      label: a.name,
+    })) || [];
+  const [addressSelected, setAddressSelected] = useState<any>(null);
+  useEffect(() => {
+    if (addressOptions.length && !addressSelected) {
+      setAddressSelected(addressOptions[0]);
+    }
+  }, [addressOptions]);
+
+  // Funcion de ir a pagar a stripe
+  async function handleCheckout() {
+    try {
+    } catch (err) {
+      console.error(err);
+      alert("Payment failed. Please try again.");
+    }
+  }
+
   return (
-    <main className="grid gap-2 grid-cols-1 md:grid-cols-2">
+    <main className="grid gap-4 grid-cols-1 md:grid-cols-2">
       {/* Seccion de datos de los productos y total */}
-      <section className="rounded-xl flex flex-col px-6 py-3 bg-gray-100 gap-3">
+      <section className="rounded-xl flex flex-col px-6 py-3 bg-gray-100 gap-3 h-fit">
         {/* Total a pagar */}
         <div>
           <p>You have to pay</p>
@@ -34,7 +60,50 @@ export default function Checkout() {
         ))}
       </section>
       {/* Seccion de datos de domicilio y compra */}
-      <section></section>
+      <section className="rounded-xl flex flex-col px-6 py-3 bg-gray-100 gap-3">
+        {/* Titulo */}
+        <div>
+          <h2>Payment</h2>
+          <p>To complete your purchase, please verify your shipping details.</p>
+        </div>
+        {/* Seccion para cambiar a la direccion a enviar el productos */}
+        {(user?.addresses?.length ?? 0) > 0 && (
+          <div>
+            <p>Select an address</p>
+            <Select
+              options={addressOptions}
+              value={addressSelected}
+              onChange={setAddressSelected}
+            />
+          </div>
+        )}
+        {/* Datos de direccion seleccionada */}
+        <div className="flex flex-col gap-2">
+          {/* Pais */}
+          <div className="flex flex-col gap-1">
+            <h6>Country</h6>
+            <p>{user?.addresses[addressSelected?.value]?.country}</p>
+          </div>
+          {/* Ciudad */}
+          <div className="flex flex-col gap-1">
+            <h6>City</h6>
+            <p>{user?.addresses[addressSelected?.value]?.city}</p>
+          </div>
+          {/* Direccion */}
+          <div className="flex flex-col gap-1">
+            <h6>Address</h6>
+            <p>{user?.addresses[addressSelected?.value]?.address}</p>
+          </div>
+        </div>
+        {/* Boton de compra */}
+        <button
+          onClick={handleCheckout}
+          className="bg-primary text-white px-4 rounded-xl w-full hover:bg-primary-hover flex gap-2 items-center justify-center"
+        >
+          Pay now with
+          <FaStripe className="text-5xl" />
+        </button>
+      </section>
     </main>
   );
 }
