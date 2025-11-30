@@ -59,26 +59,20 @@ export default function Home() {
           )}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Link
-            href="/shop"
-            className="flex gap-4 items-center bg-white rounded-2xl px-4 py-2"
-          >
+          <div className="flex gap-4 items-center bg-white rounded-2xl px-4 py-2">
             <img className="w-10" src="/icons/money.png" alt="Money" />
             <div className="text-sm">
               <h6>Save 15% on your first order</h6>
               <p className="text-primary">Order now!</p>
             </div>
-          </Link>
-          <Link
-            href="/shop:farmaco"
-            className="flex gap-4 items-center bg-white rounded-2xl px-4 py-2"
-          >
+          </div>
+          <div className="flex gap-4 items-center bg-white rounded-2xl px-4 py-2">
             <img className="w-10" src="/icons/farmaco.png" alt="Farmaco" />
             <div className="text-sm">
               <h6>Save 25% on first medicine order</h6>
               <p className="text-primary">Order now!</p>
             </div>
-          </Link>
+          </div>
         </div>
       </section>
       {/* Seccion de imagenes deslisantes */}

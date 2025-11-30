@@ -14,14 +14,14 @@ export default function Footer() {
     <footer>
       <div className="text-white bg-primary flex items-center p-4 justify-around">
         <h6 className="hidden md:block">Our experts are available 24/7</h6>
-        <button className="flex justify-center items-center gap-2 rounded-3xl hover:bg-primary-hover px-4 py-2">
+        <div className="flex justify-center items-center gap-2 rounded-3xl px-4 py-2">
           <FaPhoneAlt className="text-2xl" />
           <h6>+57 302 5177000</h6>
-        </button>
-        <button className="flex justify-center items-center gap-2 rounded-3xl hover:bg-primary-hover px-4 py-2">
+        </div>
+        <div className="flex justify-center items-center gap-2 rounded-3xl px-4 py-2">
           <IoChatbubblesSharp className="text-2xl" />
           <h6>Chat now</h6>
-        </button>
+        </div>
       </div>
       <div className="flex items-center px-8 py-4 justify-center md:justify-between">
         <div className="hidden md:flex gap-4">

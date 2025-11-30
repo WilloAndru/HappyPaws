@@ -79,16 +79,14 @@ export default function Checkout() {
           <p>To complete your purchase, please verify your shipping details.</p>
         </div>
         {/* Seccion para cambiar a la direccion a enviar el productos */}
-        {(user?.addresses?.length ?? 0) > 0 && (
-          <div>
-            <p>Select an address</p>
-            <Select
-              options={addressOptions}
-              value={addressSelected}
-              onChange={setAddressSelected}
-            />
-          </div>
-        )}
+        <div>
+          <p>Select an address</p>
+          <Select
+            options={addressOptions}
+            value={addressSelected}
+            onChange={setAddressSelected}
+          />
+        </div>
         {/* Datos de direccion seleccionada */}
         <div className="flex flex-col gap-2">
           {/* Pais */}

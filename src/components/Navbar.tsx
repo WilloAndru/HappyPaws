@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  FaComment,
   FaUserCircle,
   FaShoppingCart,
   FaSearch,
@@ -84,15 +83,6 @@ export default function Navbar() {
 
       {/* Botones de acción */}
       <div className="flex items-center justify-end absolute top-0 right-0 md:static">
-        {/* Boton de chat  */}
-        <Link
-          href="/"
-          className="flex items-center gap-2 rounded-xl hover:bg-primary-hover px-3 py-2"
-        >
-          <FaComment className="text-3xl" />
-          <h6 className="hidden md:block">Help</h6>
-          <FaChevronDown className="hidden md:block" />
-        </Link>
         {/* Boton de perfil o auth */}
         <div
           className="relative flex items-center gap-2 rounded-xl hover:bg-primary-hover px-3 py-2"
@@ -111,7 +101,7 @@ export default function Navbar() {
           </Link>
           {/* Seccion de opciones de usuario */}
           {showOptionsProfile && (
-            <section className="absolute top-[47px] right-0 flex flex-col p-2 rounded-xl bg-white text-black shadow-2xl w-max font-bold">
+            <section className="absolute top-[47px] right-0 flex flex-col p-2 rounded-xl bg-white text-black shadow-2xl w-max font-bold z-20">
               {optionsUser.map(({ label, href, icon: Icon }) => {
                 const classes =
                   "flex items-center gap-2 py-2 px-3 hover:bg-gray-200 rounded-xl cursor-pointer";
