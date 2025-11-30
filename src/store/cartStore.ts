@@ -11,10 +11,16 @@ type CartItem = {
 
 type CartStore = {
   items: CartItem[];
+  buyNowItem: CartItem | null;
+
   addToCart: (item: CartItem) => void;
   removeToCart: (id: number) => void;
-  clear: () => void;
-  total: () => number;
+
+  setBuyNow: (item: CartItem) => void;
+
+  clearCart: () => void;
+  totalCart: () => number;
+  totalBuyNow: () => number;
 };
 
 // Usamos zustand, una herramineta mas moderna que el clasico localstorage
@@ -22,25 +28,32 @@ export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
       items: [],
+      buyNowItem: null,
 
-      // Funcion para agregar item al carro
+      // CARRITO NORMAL
       addToCart: (item) =>
         set((state) => ({
           items: [...state.items, item],
         })),
 
-      // Funcion para remover item
       removeToCart: (id) =>
         set((state) => ({
           items: state.items.filter((i) => i.id !== id),
         })),
 
-      // Eliminamos todos los items del carrito
-      clear: () => set({ items: [] }),
+      clearCart: () => set({ items: [] }),
 
-      // Hallamos el total del coste de todos los items
-      total: () =>
+      // COMPRA DIRECTA
+      setBuyNow: (item) => set({ buyNowItem: item }),
+
+      // TOTALES
+      totalCart: () =>
         get().items.reduce((sum, i) => sum + i.price * i.quantity, 0),
+
+      totalBuyNow: () =>
+        get().buyNowItem
+          ? get().buyNowItem!.price * get().buyNowItem!.quantity
+          : 0,
     }),
     { name: "cart-storage" }
   )

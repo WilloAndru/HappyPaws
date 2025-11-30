@@ -8,7 +8,14 @@ import { FaShoppingCart } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 
 export default function Cart() {
-  const { items, removeToCart, total, clear } = useCartStore();
+  // Variables de cache del carrito
+  const items = useCartStore((state) => state.items);
+  const removeToCart = useCartStore((state) => state.removeToCart);
+  const clearCart = useCartStore((state) => state.clearCart);
+  const totalCart = items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
   // Interfaz de carrito vacio
   if (items.length === 0) {
@@ -60,7 +67,11 @@ export default function Cart() {
           </div>
           {/* Boton de remover */}
           <button
-            onClick={() => removeToCart(i.id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              removeToCart(i.id);
+            }}
             className="bg-red-500 hover:bg-red-400 px-4 self-stretch rounded-xl text-white text-3xl flex items-center justify-center"
           >
             <MdDeleteForever />
@@ -68,12 +79,12 @@ export default function Cart() {
         </Link>
       ))}
       {/* Total a pagar */}
-      <h5 className="text-center">Total to pay: ${total().toFixed(2)}</h5>
+      <h5 className="text-center">Total to pay: ${totalCart.toFixed(2)}</h5>
       {/* Boton de pagar y vaciar carrito */}
       <section className="flex gap-4">
         <button
           className="rounded-xl px-4 py-2 bg-red-500 hover:bg-red-400 text-white w-1/2"
-          onClick={clear}
+          onClick={clearCart}
         >
           Clear cart
         </button>
