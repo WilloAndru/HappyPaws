@@ -9,17 +9,17 @@ type CartItem = {
   quantity: number;
 };
 
+type PurchaseMode = "cart" | "buyNow";
+
 type CartStore = {
   items: CartItem[];
   buyNowItem: CartItem | null;
-
+  state: PurchaseMode;
+  setState: (mode: PurchaseMode) => void;
   addToCart: (item: CartItem) => void;
   removeToCart: (id: number) => void;
-
   setBuyNow: (item: CartItem) => void;
-
   clearCart: () => void;
-  totalCart: () => number;
   totalBuyNow: () => number;
 };
 
@@ -29,6 +29,13 @@ export const useCartStore = create<CartStore>()(
     (set, get) => ({
       items: [],
       buyNowItem: null,
+      state: "cart",
+
+      // Cambiar estado de compra
+      setState: (mode) =>
+        set(() => ({
+          state: mode,
+        })),
 
       // CARRITO NORMAL
       addToCart: (item) =>
@@ -45,10 +52,6 @@ export const useCartStore = create<CartStore>()(
 
       // COMPRA DIRECTA
       setBuyNow: (item) => set({ buyNowItem: item }),
-
-      // TOTALES
-      totalCart: () =>
-        get().items.reduce((sum, i) => sum + i.price * i.quantity, 0),
 
       totalBuyNow: () =>
         get().buyNowItem

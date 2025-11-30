@@ -2,7 +2,7 @@
 
 import { useProduct, useProductsByCategory } from "@/app/hooks/useProducts";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Heart } from "lucide-react";
 import Rating from "@/components/Rating";
@@ -80,10 +80,47 @@ export default function Product() {
   };
 
   // Funciones para añadir, remover y validar si el producto esta en el carro
-  const { addToCart, removeToCart } = useCartStore();
+  const { setState, addToCart, removeToCart, setBuyNow } = useCartStore();
   const isOnCart = useCartStore((state) =>
     state.items.some((i) => i.id === productId)
   );
+
+  // Funcion para comprar ahora
+  const router = useRouter();
+  const handleBuyNow = () => {
+    if (!user) {
+      setShowAdviceAuth(true);
+    } else {
+      setBuyNow({
+        id: productId,
+        name: product.name,
+        imageUrl: product.imageUrl,
+        price: Number((product.price * (1 - product.discount)).toFixed(2)),
+        quantity: qty.value,
+      });
+      setState("buyNow");
+      router.push("/checkout");
+    }
+  };
+
+  // Funcion para añadir al carro o removerlo
+  const handleCart = () => {
+    if (!user) {
+      setShowAdviceAuth(true);
+    } else {
+      if (isOnCart) {
+        removeToCart(productId);
+      } else {
+        addToCart({
+          id: productId,
+          name: product.name,
+          imageUrl: product.imageUrl,
+          price: Number((product.price * (1 - product.discount)).toFixed(2)),
+          quantity: qty.value,
+        });
+      }
+    }
+  };
 
   if (isLoadingProduct || isLoadingCategory) return <p>Loading...</p>;
 
@@ -137,7 +174,10 @@ export default function Product() {
           </section>
           {/* Boton de compra y carrito */}
           <section className="flex flex-col gap-1">
-            <button className="rounded-xl bg-primary text-white px-4 py-2 hover:bg-primary-hover">
+            <button
+              onClick={handleBuyNow}
+              className="rounded-xl bg-primary text-white px-4 py-2 hover:bg-primary-hover"
+            >
               Buy now
             </button>
             <button
@@ -146,25 +186,7 @@ export default function Product() {
                   ? "bg-red-400 hover:bg-red-500"
                   : "bg-blue-400 hover:bg-blue-500"
               }`}
-              onClick={() => {
-                if (!user) {
-                  setShowAdviceAuth(true);
-                } else {
-                  if (isOnCart) {
-                    removeToCart(productId);
-                  } else {
-                    addToCart({
-                      id: productId,
-                      name: product.name,
-                      imageUrl: product.imageUrl,
-                      price: Number(
-                        (product.price * (1 - product.discount)).toFixed(2)
-                      ),
-                      quantity: qty.value,
-                    });
-                  }
-                }
-              }}
+              onClick={handleCart}
             >
               <FaCartArrowDown />
               {isOnCart ? "Remove to cart" : "Add to cart"}

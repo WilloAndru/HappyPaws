@@ -3,6 +3,7 @@
 import { useCartStore } from "@/store/cartStore";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
@@ -16,6 +17,7 @@ export default function Cart() {
     (sum, item) => sum + item.price * item.quantity,
     0
   );
+  const { setState } = useCartStore();
 
   // Interfaz de carrito vacio
   if (items.length === 0) {
@@ -34,6 +36,13 @@ export default function Cart() {
       </main>
     );
   }
+
+  // Funcion de comprar e ir al checkout
+  const router = useRouter();
+  const handleBuy = () => {
+    setState("cart");
+    router.push("/checkout");
+  };
 
   return (
     <main className="flex flex-col gap-4 bg-gray-200 rounded-2xl md:mx-[20vw] justify-center px-8 py-5">
@@ -88,12 +97,12 @@ export default function Cart() {
         >
           Clear cart
         </button>
-        <Link
-          href="/checkout"
+        <button
+          onClick={handleBuy}
           className="rounded-xl px-4 py-2 bg-primary hover:bg-primary-hover text-center text-white font-bold w-1/2"
         >
           Go to pay
-        </Link>
+        </button>
       </section>
     </main>
   );
