@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useSearchProducts } from "../hooks/useProducts";
 import Image from "next/image";
 import Link from "next/link";
+export const dynamic = "force-dynamic";
 
 export default function Filters() {
   const searchParams = useSearchParams();
