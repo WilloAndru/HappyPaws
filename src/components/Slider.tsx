@@ -45,12 +45,14 @@ export default function Slider({ list, isCategory }: SliderProps) {
                   : `/product/${item.id}`
               }
             >
-              <div className="w-full h-[180px] flex items-center justify-center overflow-hidden bg-white">
+              <div className="w-full ">
                 <img
                   src={isCategory ? `/pets/${item}` : item.imageUrl}
                   alt={name}
-                  className={`w-full h-full ${
-                    isCategory ? "rounded-full object-contain" : "object-cover"
+                  className={`w-full ${
+                    isCategory
+                      ? "rounded-full object-cover"
+                      : "object-cover h-[180px]"
                   }`}
                 />
               </div>
