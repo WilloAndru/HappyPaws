@@ -78,7 +78,7 @@ export default function Checkout() {
           <h2>Payment</h2>
           <p>To complete your purchase, please verify your shipping details.</p>
         </div>
-        {/* Seccion para cambiar a la direccion a enviar el productos */}
+        {/* Seccion para cambiar a la dirección a enviar el productos */}
         <div>
           <p>Select an address</p>
           <Select
