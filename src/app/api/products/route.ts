@@ -1,5 +1,5 @@
-import { Category, AnimalType } from "@/generated/prisma";
 import { prisma } from "@/lib/prisma";
+import { Category, AnimalType } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 // Función para obtener productos con filtros opcionales

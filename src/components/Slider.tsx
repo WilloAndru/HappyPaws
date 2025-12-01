@@ -27,7 +27,7 @@ export default function Slider({ list, isCategory }: SliderProps) {
         className="flex transition-transform duration-500 ease-in-out gap-[1%] w-full"
         style={{ transform: `translateX(-${step * 100}%)` }}
       >
-        {list.map((item, index) => {
+        {list?.map((item, index) => {
           const name = isCategory ? item.replace(".png", "") : item.name;
           const capitalized = name.charAt(0).toUpperCase() + name.slice(1);
           return (
@@ -45,13 +45,15 @@ export default function Slider({ list, isCategory }: SliderProps) {
                   : `/product/${item.id}`
               }
             >
-              <img
-                src={isCategory ? `/pets/${item}` : item.imageUrl}
-                alt={name}
-                className={`object-cover ${
-                  isCategory ? "rounded-full" : "rounded-sm w-full h-full"
-                }`}
-              />
+              <div className="w-full h-[180px] flex items-center justify-center overflow-hidden bg-white">
+                <img
+                  src={isCategory ? `/pets/${item}` : item.imageUrl}
+                  alt={name}
+                  className={`w-full h-full ${
+                    isCategory ? "rounded-full object-contain" : "object-cover"
+                  }`}
+                />
+              </div>
               <div className="flex flex-col gap-1 px-4 py-2">
                 <h6>{capitalized}</h6>
                 {!isCategory && <Rating rating={item.rating} />}

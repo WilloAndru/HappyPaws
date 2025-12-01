@@ -1,4 +1,4 @@
-import { AnimalType, Category } from "@/generated/prisma";
+import { AnimalType, Category } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 // Funcion para obetener todos los tipos de animales y las categorias
